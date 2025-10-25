@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Hero Start -->
+<section class="hero-section text-center text-white d-flex align-items-center justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold animated slideInDown">Delivering the Future, Today</h1>
+                <p class="lead fs-4 mb-4 animated slideInUp">Fast, Reliable & Scalable Supply Chain Solutions</p>
+                <a href="{{ url_for('services') }}" class="btn btn-light btn-lg animated slideInUp">
+                    <span>Explore Services</span>
+                    <i class="fa fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero End -->
+
+<!-- Facts Section Start -->
+<section class="facts-section py-5">
+  <div class="container py-5">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+        <h6 class="text-primary text-uppercase mb-3 fw-bold">Some Facts</h6>
+        <h1 class="fw-bold mb-4 text-dark">Why Choose AYLB Logistics?</h1>
+        <ul class="list-unstyled fs-5 text-secondary lh-lg">
+          <li>🚛 Pan-India connectivity ensuring seamless logistics support.</li>
+          <li>👷 Skilled and hardworking staff committed to excellence.</li>
+          <li>💡 Innovative and reliable logistics solutions with a young, dynamic approach.</li>
+        </ul>
+
+        <div class="d-flex align-items-center mt-5 shadow-sm p-3 rounded bg-white">
+          <i class="fa fa-headphones fa-2x text-primary p-3 bg-light rounded-circle me-3"></i>
+          <div>
+            <h6 class="text-muted mb-1">Call for any query!</h6>
+            <h3 class="text-primary fw-bold m-0">+91 9910220108</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <h1 class="fw-bold text-dark mb-4">What Sets Us Apart?</h1>
+        <div class="row g-4 align-items-center">
+          <div class="col-sm-6">
+            <div class="stat-card bg-primary text-white p-4 mb-4 rounded-4 shadow-sm">
+              <i class="fa fa-building fa-2x mb-2"></i>
+              <h2 class="mb-0 d-inline">23+</h2>
+              <p class="mb-0">Offices in India</p>
+            </div>
+            <div class="stat-card bg-info text-white p-4 rounded-4 shadow-sm">
+              <i class="fa fa-users fa-2x mb-2"></i>
+              <h2 class="mb-0 d-inline">230+</h2>
+              <p class="mb-0">Hardworking Staff</p>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="stat-card bg-secondary text-white p-4 mb-4 rounded-4 shadow-sm">
+              <i class="fa fa-flask fa-2x mb-2"></i>
+              <h2 class="mb-0 d-inline">15+</h2>
+              <p class="mb-0">Years of Experience</p>
+            </div>
+            <div class="stat-card bg-primary text-white p-4 rounded-4 shadow-sm">
+              <i class="fa fa-map fa-2x mb-2"></i>
+              <h2 class="mb-0 d-inline">100+</h2>
+              <p class="mb-0">Serviceable Pincodes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-5" />
+
+    <div class="row g-4 text-center">
+      <div class="col-md-4 wow fadeIn" data-wow-delay="0.3s">
+        <div class="p-4 rounded-4 shadow-sm bg-white h-100 hover-up">
+          <i class="fas fa-check-circle fa-3x text-primary mb-3"></i>
+          <h5 class="fw-bold text-dark mb-2">Quality Assurance</h5>
+          <p class="text-muted mb-0">
+            Unwavering commitment to quality and reliability in every shipment.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 wow fadeIn" data-wow-delay="0.5s">
+        <div class="p-4 rounded-4 shadow-sm bg-white h-100 hover-up">
+          <i class="fas fa-globe fa-3x text-primary mb-3"></i>
+          <h5 class="fw-bold text-dark mb-2">Global Expertise</h5>
+          <p class="text-muted mb-0">
+            Connecting your business worldwide while maintaining local efficiency.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 wow fadeIn" data-wow-delay="0.7s">
+        <div class="p-4 rounded-4 shadow-sm bg-white h-100 hover-up">
+          <i class="fas fa-users-cog fa-3x text-primary mb-3"></i>
+          <h5 class="fw-bold text-dark mb-2">Expert Team</h5>
+          <p class="text-muted mb-0">
+            Experienced professionals ensuring seamless and stress-free logistics.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Facts Section End -->
+
+<!-- Feature Start -->
+<div class="container-fluid overflow-hidden py-5 px-lg-0">
+  <div class="container feature py-5 px-lg-0">
+    <div class="row g-5 mx-lg-0">
+      <div class="col-lg-6 feature-text">
+        <h6 class="text-primary text-uppercase mb-2 fw-bold">Our Network</h6>
+        <h2 class="mb-5">REGIONS DIVIDED INTO BRANCHES</h2>
+
+        <!-- Dynamic Bars -->
+        <div id="network-container">
+          <div class="network-item" data-count="2"><span>DELHI</span></div>
+          <div class="network-item" data-count="5"><span>AP & TELANGANA</span></div>
+          <div class="network-item" data-count="12"><span>BIHAR, JHARKHAND & ODISHA</span></div>
+          <div class="network-item" data-count="11"><span>HARYANA, RAJASTHAN</span></div>
+          <div class="network-item" data-count="7"><span>J&K, HP, LADAKH & PUNJAB</span></div>
+          <div class="network-item" data-count="5"><span>KARNATAKA</span></div>
+          <div class="network-item" data-count="8"><span>MP & CHHATTISGARH</span></div>
+          <div class="network-item" data-count="4"><span>PUNE, NASIK & GOA</span></div>
+          <div class="network-item" data-count="3"><span>MUMBAI, VAPI & DAMAN</span></div>
+          <div class="network-item" data-count="3"><span>NORTH-EAST</span></div>
+          <div class="network-item" data-count="5"><span>UTTARAKHAND</span></div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 pe-lg-0">
+        <div class="position-relative h-100">
+          <img class="position-absolute img-fluid w-100 h-100" src="{{ url_for('static', filename='images/feature.jpg') }}" style="object-fit: cover;" alt="AYLB Network">
+        </div>
+      </div>
+      <!-- <div class="col-lg-6 pe-lg-0">
+        <div class="image-container position-relative shadow rounded-4 overflow-hidden">
+          <img src="{{ url_for('static', filename='images/feature.jpg') }}"
+               alt="AYLB Network Coverage"
+               class="img-fluid w-100"
+               style="object-fit: cover; border-radius: 16px; height: 420px;">
+        </div> -->
+    </div>
+  </div>
+</div>
+<!-- Feature End -->
+
+<section class="client-logo-grid py-5" style="background-color: #f7f7f7;">
+  <div class="container py-5">
+    <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+      <h6 class="text-primary text-uppercase mb-2 fw-bold">Our Partners</h6>
+      <h1 class="mb-5">Trusted by Industry Leaders</h1>
+    </div>
+    <div class="row g-4 justify-content-center">
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2 wow fadeInUp" data-wow-delay="0.3s">
+        <div class="logo-item rounded-3 p-4 bg-white d-flex align-items-center justify-content-center h-100">
+          <img class="img-fluid logo-img" src="/static/images/amazon.png" alt="Client Logo 1" onerror="this.onerror=null;this.src='https://placehold.co/150x70/ffffff/525252?text=Client+1';" />
+        </div>
+      </div>
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2 wow fadeInUp" data-wow-delay="0.4s">
+        <div class="logo-item rounded-3 p-4 bg-white d-flex align-items-center justify-content-center h-100">
+          <img class="img-fluid logo-img" src="/static/images/client1.png" alt="Client Logo 2" onerror="this.onerror=null;this.src='https://placehold.co/150x70/ffffff/525252?text=Client+2';" />
+        </div>
+      </div>
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="logo-item rounded-3 p-4 bg-white d-flex align-items-center justify-content-center h-100">
+          <img class="img-fluid logo-img" src="/static/images/client2.png" alt="Client Logo 3" onerror="this.onerror=null;this.src='https://placehold.co/150x70/ffffff/525252?text=Client+3';" />
+        </div>
+      </div>
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2 wow fadeInUp" data-wow-delay="0.6s">
+        <div class="logo-item rounded-3 p-4 bg-white d-flex align-items-center justify-content-center h-100">
+          <img class="img-fluid logo-img" src="/static/images/client3.jpg" alt="Client Logo 4" onerror="this.onerror=null;this.src='https://placehold.co/150x70/ffffff/525252?text=Client+4';" />
+        </div>
+      </div>
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2 wow fadeInUp" data-wow-delay="0.7s">
+        <div class="logo-item rounded-3 p-4 bg-white d-flex align-items-center justify-content-center h-100">
+          <img class="img-fluid logo-img" src="/static/images/reliance.png" alt="Client Logo 5" onerror="this.onerror=null;this.src='https://placehold.co/150x70/ffffff/525252?text=Client+5';" />
+        </div>
+      </div>
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2 wow fadeInUp" data-wow-delay="0.8s">
+        <div class="logo-item rounded-3 p-4 bg-white d-flex align-items-center justify-content-center h-100">
+          <img class="img-fluid logo-img" src="/static/images/hippo.png" alt="Client Logo 6" onerror="this.onerror=null;this.src='https://placehold.co/150x70/ffffff/525252?text=Client+6';" />
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<section class="container py-5 text-center">
+  <h2 class="fw-bold mb-4">Our Highlights</h2>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">30+ Lakh Packets Delivered</h5>
+          <p class="card-text">Efficiently managed large-scale logistics during festive rush.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">Pan India Presence</h5>
+          <p class="card-text">Expanding our logistics reach across every major city.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">24x7 Operations</h5>
+          <p class="card-text">Ensuring your goods reach safely, anytime, anywhere.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

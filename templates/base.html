@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AYLB Logistics</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="path/to/wow.min.js"></script>
+  <script>new WOW().init();</script>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg" style="background-color: #4da6ff; padding: 1rem 2rem;">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}" style="font-weight: 700; font-size: 1.4rem; color: white;">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="AYLB Logo"
+            style="height: 45px; width: auto; margin-right: 10px; filter: brightness(0) invert(1);">
+        AYLB Logistics
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav" style="font-size: 2.1rem;">
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('index') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('about') }}">About</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('services') }}">Services</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="pt-5 mt-5">
+    {% block content %}{% endblock %}
+  </main>
+  <div class="container-fluid bg-dark text-light footer pt-5 wow fadeIn" data-wow-delay="0.1s"
+    style="margin-top: 6rem;">
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-3 col-md-6">
+                <h4 class="footer-title text-light mb-4">Get In Touch</h4>
+                <p class="mb-2 text-white-50"><i class="fa fa-map-marker-alt me-3 text-primary"></i>Ground Floor D 65
+                    Sector 63 Noida 201301
+                </p>
+                <p class="mb-2 text-white-50"><i class="fa fa-phone-alt me-3 text-primary"></i>+91 9910220108</p>
+                <p class="mb-2 text-white-50"><i class="fa fa-phone-alt me-3 text-primary"></i>+91 8860762494</p>
+                <p class="mb-2 text-white-50"><i class="fa fa-envelope me-3 text-primary"></i>info@logisnow.com</p>
+                <div class="d-flex pt-2">
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <h4 class="footer-title text-light mb-4">Our Services</h4>
+                <a class="btn btn-link footer-link" href="air_freight.html">Air Freight</a>
+                <a class="btn btn-link footer-link" href="train_freight.html">Train Freight</a>
+                <a class="btn btn-link footer-link" href="truck_freight.html">Truck Freight</a>
+                <a class="btn btn-link footer-link" href="ODC.html">ODC (Over Dimensional Cargo)</a>
+                <a class="btn btn-link footer-link" href="warehousing.html">Warehousing</a>
+                <a class="btn btn-link footer-link" href="value_added_services.html">Value Added Services</a>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <h4 class="footer-title text-light mb-4">Quick Links</h4>
+                <a class="btn btn-link footer-link" href="{{ url_for('index') }}">Home</a>
+                <a class="btn btn-link footer-link" href="{{ url_for('about') }}">About Us</a>
+                <a class="btn btn-link footer-link" href="{{ url_for('contact') }}">Contact Us</a>
+                <a class="btn btn-link footer-link" href="{{ url_for('services') }}">All Services</a>
+                <a class="btn btn-link footer-link" href="privacy.html">Privacy Policy</a>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <h4 class="footer-title text-light mb-4">Stay Connected</h4>
+                <p class="text-white-50">Subscribe to our newsletter for the latest logistics insights.</p>
+                <div class="position-relative mx-auto" style="max-width: 400px;">
+                    <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                    <button type="button"
+                        class="btn btn-primary newsletter-btn py-2 position-absolute top-0 end-0 mt-2 me-2">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-fluid copyright py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    &copy; 2024 <a class="text-white" href="#">AYLB Logistics</a>, All Rights Reserved.
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    Designed By <a class="text-white" href="#">Your Company Name</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
