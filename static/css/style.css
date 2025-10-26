@@ -421,3 +421,42 @@ body {
 .copyright a.border-bottom:hover {
     color: #4da6ff !important;
 }
+/* ------------------------------------------- */
+/* --- UPDATED: Vision & Mission Section Styling (MATCHED) --- */
+/* ------------------------------------------- */
+
+/* Shared Base Card Styles for both Vision and Mission */
+.vision-card,
+.mission-card {
+    /* Set to white background with light border */
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    /* Smooth transition for interactive effects */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Shared Hover Effect for both Vision and Mission */
+.vision-card:hover,
+.mission-card:hover {
+    /* Lift and add subtle shadow on hover */
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Mission List Styling */
+.mission-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.mission-list li {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: #495057; /* Darker text for readability */
+    line-height: 1.5;
+    transition: color 0.3s ease;
+}
+
+.mission-list li:hover {
+    color: #343a40; /* Darken text slightly on hover */
+}
