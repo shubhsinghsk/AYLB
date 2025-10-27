@@ -1,7 +1,148 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container py-5">
-  <h2 class="fw-bold mb-4 text-center">About AYLB Logistics</h2>
-  <p class="lead text-center">AYLB Logistics is an integrated supply chain solutions provider delivering operational excellence, technology-driven logistics, and customer satisfaction.</p>
+
+<!-- Page Header Start (Breadcrumb/Banner) -->
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">About Us</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-white" href="index.html">Home</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">About</li>
+            </ol>
+        </nav>
+    </div>
 </div>
+<!-- Page Header End -->
+
+<!-- About Section Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="text-primary text-uppercase mb-3 fw-bold">Who We Are</h6>
+                <h2 class="display-5 fw-bold mb-4">India's Growing Logistics Marketplace</h2>
+                <p class="mb-4 fs-5 text-secondary">
+                    We serve the entire gamut of Logistics from **Storage space to distribution** along with **3PL, Built to Suit, WMS, Consultancy, Equipment rental services**. We handhold you for a hassle-free experience & optimized solution.
+                </p>
+                <p class="mb-4 text-dark-emphasis">
+                    We are more than just a logistics company – we are your **strategic partner**. We are dedicated to building long-lasting relationships with our clients, ensuring the highest level of service and support.
+                </p>
+                <div class="d-flex align-items-center mb-4">
+                    <i class="fa fa-route fa-3x text-primary flex-shrink-0 me-3"></i>
+                    <div>
+                        <h4 class="mb-1">Hassle-Free & Optimized Solutions</h4>
+                        <p class="m-0 text-muted">Leveraging technology and expertise for your supply chain success.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <!-- Placeholder Image for visual appeal - Replace with a real company image -->
+                <img class="img-fluid rounded-4 shadow-lg about-image" src="{{url_for('static', filename='images/anil.jpg')}}" alt="Tech Enabled Logistics">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About Section End -->
+
+<!-- Story & Commitment Section Start -->
+<div class="container-fluid bg-light py-5">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="text-primary text-uppercase mb-3 fw-bold">Our Commitment</h6>
+                <h2 class="display-6 fw-bold mb-4">Your Trusted Logistics Strategic Partner</h2>
+                 <p class="mb-4 text-dark-emphasis">
+                    At AYLB Logistics, we are dedicated to building long-lasting relationships with our clients, and we work tirelessly to ensure that they receive the highest level of service and support. We are proud to have a team of experts who are passionate about logistics and committed to delivering exceptional results.
+                </p>
+                <p class="mb-4 fs-5 text-dark-emphasis border-start border-5 border-primary ps-3 fst-italic">
+                    "At AYLB Logistics, we use innovation and expertise to optimize your supply chain, reduce costs, and improve your bottom line. Let us be your strategic logistics partner and help your business thrive."
+                </p>
+                <p class="fw-bold mt-4">Thank you for considering AYLB Logistics for your logistics needs. We look forward to the opportunity to work with you and help your business thrive.</p>
+            </div>
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <h6 class="text-primary text-uppercase mb-3 fw-bold">Our Journey</h6>
+                <h2 class="display-6 fw-bold mb-4">The AYLB Logistics Story</h2>
+                <p class="mb-4 text-secondary">
+                    Welcome to AYLB Logistics, a leading tech-enabled supply chain company that specializes in providing innovative logistics solutions for businesses of all sizes. Our goal is to help our clients optimize their supply chains, reduce costs, and improve their bottom lines.
+                </p>
+                <div class="d-flex align-items-center">
+                    <i class="fa fa-hands-helping fa-3x text-primary flex-shrink-0 me-3"></i>
+                    <div>
+                        <h4 class="mb-1">Decades of Expertise</h4>
+                        <p class="m-0 text-muted">Our team has decades of experience in the logistics industry, dedicated to staying ahead of trends and leveraging the latest technologies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Story & Commitment Section End -->
+
+
+<!-- Leadership Section Start -->
+<div class="container-xxl py-5">
+    <div class="container py-5">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="text-primary text-uppercase mb-2 fw-bold">Leadership</h6>
+            <h2 class="display-5 fw-bold mb-5">Meet Our Esteemed Team</h2>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <!-- Founder 1: Vivek Tiwari -->
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="team-card bg-white p-4 text-center rounded-4 h-100 shadow-sm">
+                    <img class="img-fluid rounded-circle founder-img mb-4" src="{{url_for('static', filename='images/anil.jpg')}}" alt="Vivek Tiwari">
+                    <h4 class="mb-1 text-primary">Anil Yadav</h4>
+                    <small class="text-uppercase fw-bold text-dark">Founder</small>
+                    <hr class="w-25 mx-auto">
+                    <p class="text-muted mb-1 small fw-bold">AKGEC</p>
+                    <p class="text-muted mb-0 small">Electrical Engineer</p>
+                </div>
+            </div>
+            <!-- Founder 2: Ranbir Nandan -->
+            <!-- <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="team-card bg-white p-4 text-center rounded-4 h-100 shadow-sm">
+                    <img class="img-fluid rounded-circle founder-img mb-4" src="https://placehold.co/150x150/4da6ff/ffffff?text=RN" alt="Ranbir Nandan">
+                    <h4 class="mb-1 text-primary">Ranbir Nandan</h4>
+                    <small class="text-uppercase fw-bold text-dark">Founder</small>
+                    <hr class="w-25 mx-auto">
+                    <p class="text-muted mb-1 small fw-bold">UPES</p>
+                    <p class="text-muted mb-0 small">BPCL, Aspen tech</p>
+                </div>
+            </div> -->
+            <!-- Founder 3: Basant Kumar
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
+                <div class="team-card bg-white p-4 text-center rounded-4 h-100 shadow-sm">
+                    <img class="img-fluid rounded-circle founder-img mb-4" src="https://placehold.co/150x150/4da6ff/ffffff?text=BK" alt="Basant Kumar">
+                    <h4 class="mb-1 text-primary">Basant Kumar</h4>
+                    <small class="text-uppercase fw-bold text-dark">Founder</small>
+                    <hr class="w-25 mx-auto">
+                    <p class="text-muted mb-1 small fw-bold">IIT</p>
+                    <p class="text-muted mb-0 small">IOCL, Essar, KNPC</p>
+                </div>
+            </div>
+            
+            <!-- Mentor/Investor Section -->
+            <!-- <div class="col-12 mt-5">
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold text-dark mb-3">Valued Mentor & Investor</h3>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.9s">
+                        <div class="team-card mentor-card bg-white p-4 text-center rounded-4 h-100 shadow-lg">
+                            <img class="img-fluid rounded-circle founder-img mb-4" src="https://placehold.co/150x150/4da6ff/ffffff?text=AA" alt="Anand Aryamane">
+                            <h4 class="mb-1 text-primary">Anand Aryamane</h4>
+                            <small class="text-uppercase fw-bold text-secondary">Mentor/Investor</small>
+                            <hr class="w-25 mx-auto">
+                            <p class="text-muted mb-1 small fw-bold">UK-Nautical Science Maersk</p>
+                            <p class="text-muted mb-0 small">Kool Solution</p>
+                        </div>
+                    </div>
+                </div>
+            </div> --> -->
+        </div>
+    </div>
+</div>
+<!-- Leadership Section End -->
+
 {% endblock %}

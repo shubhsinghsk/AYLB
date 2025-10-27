@@ -460,3 +460,52 @@ body {
 .mission-list li:hover {
     color: #343a40; /* Darken text slightly on hover */
 }
+.page-header {
+    /* Use a dark overlay over a background image for a professional look */
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://placehold.co/1920x400/303030/ffffff?text=Logistics+Background');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+}
+
+.page-header .breadcrumb-item + .breadcrumb-item::before {
+    color: var(--bs-white);
+}
+
+/* About Section Image Style */
+.about-image {
+    object-fit: cover;
+    max-height: 400px;
+    /* Add border radius for modern look */
+    border-radius: 1rem !important;
+}
+
+/* Team Card (Founders/Mentors) Styling */
+.team-card {
+    border: 1px solid #e9ecef;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+/* Impressive Lift and Shadow on Hover */
+.team-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+.founder-img {
+    border: 5px solid var(--bs-light);
+    /* Creates a striking colored ring effect */
+    box-shadow: 0 0 0 5px var(--bs-primary); 
+}
+
+/* Special styling for the Mentor/Investor card */
+.mentor-card {
+    /* Subtle glow effect for the mentor/investor card */
+    border: 2px solid var(--bs-primary); 
+}
