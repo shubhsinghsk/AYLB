@@ -627,3 +627,53 @@ contact-form {
     background-color: #ffffff; /* Use white background for the form within the light section */
     border: 1px solid #e9ecef;
 }
+/* ------------------------------------------- */
+/* --- NEW: Service Page Specific Styling --- */
+/* ------------------------------------------- */
+
+/* Style the anchor tag holding the card */
+.service-card-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit text color */
+}
+
+/* Base style for all service cards (Business & 3PL) */
+.service-card,
+.service-card-3pl {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* Hover effect for ALL cards */
+.service-card:hover,
+.service-card-3pl:hover {
+    transform: translateY(-8px); /* Lift the card */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important; /* Stronger shadow */
+    border-color: var(--bs-primary); /* Primary color border */
+}
+
+/* Business Service Cards (Larger Icons/Text) */
+.service-card {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 3PL Service Cards (Smaller, Tighter Grid) */
+.service-card-3pl {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem !important; /* Slightly smaller padding */
+}
+
+/* Overriding the text color on hover for better visibility */
+.service-card-link:hover h4,
+.service-card-link:hover h5 {
+    color: var(--bs-primary) !important;
+}
