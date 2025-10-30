@@ -509,3 +509,121 @@ body {
     /* Subtle glow effect for the mentor/investor card */
     border: 2px solid var(--bs-primary); 
 }
+.contact-info-card {
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+}
+
+/* Hover effect for contact cards */
+.contact-info-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-4px);
+    border-color: var(--bs-primary);
+}
+
+/* Map Container */
+.map-container {
+    height: 100%;
+    min-height: 400px; /* Ensure map is visible on mobile */
+    overflow: hidden;
+}
+
+.map-container iframe {
+    /* Style the iframe border to match the container */
+    border-radius: 0.5rem;
+}
+
+/* Contact Form Styling */
+.contact-form {
+    background-color: #f8f9fa; /* Light background for contrast */
+    border: 1px solid #e9ecef;
+}
+
+.contact-form .form-control {
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    border-color: #dee2e6;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form .form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(77, 166, 255, 0.25); /* Primary color glow */
+}
+
+/* Submit Button Hover */
+.submit-btn:hover {
+    transform: scale(1.01);
+    background-color: #2ec4b6 !important; /* Use secondary color for interactive pop */
+    border-color: #2ec4b6 !important;
+}
+
+/* Responsive adjustments */
+@media (min-width: 992px) {
+    .map-container {
+        height: 100%;
+    }
+}
+contact-form {
+    background-color: #f8f9fa; 
+    border: 1px solid #e9ecef;
+}
+
+.contact-form .form-control {
+    /* These styles apply to ALL inputs, including the new mobile number field */
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    border-color: #dee2e6;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form .form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(77, 166, 255, 0.25); 
+}
+/* ------------------------------------------- */
+/* --- NEW: Careers Page Specific Styling --- */
+/* ------------------------------------------- */
+
+/* Feature Cards (Culture/Perks) */
+.career-feature-card {
+    transition: all 0.4s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.career-feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+    border-color: var(--bs-primary);
+}
+
+/* Job Opening Cards */
+.job-opening-card {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.job-opening-card:hover {
+    /* Subtle change on hover to indicate clickability */
+    border-color: var(--bs-primary);
+    background-color: #f7f9fc !important;
+    cursor: pointer;
+}
+
+/* Apply Button Styling */
+.apply-btn {
+    min-width: 150px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.apply-btn:hover {
+    background-color: var(--bs-primary);
+    color: var(--bs-white) !important;
+}
+
+/* Application Form Background */
+.application-form {
+    background-color: #ffffff; /* Use white background for the form within the light section */
+    border: 1px solid #e9ecef;
+}
