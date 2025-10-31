@@ -677,3 +677,59 @@ contact-form {
 .service-card-link:hover h5 {
     color: var(--bs-primary) !important;
 }
+/* ------------------------------------------- */
+/* --- NEW: Interactive Tabbed Service Styling --- */
+/* ------------------------------------------- */
+
+/* Styling for the Tab Navigation (Pills) */
+.service-tabs .nav-link {
+    color: var(--bs-dark);
+    background-color: #f7f9fc; /* Light background for pill */
+    border: 1px solid #e9ecef;
+    margin: 0 5px; /* Spacing between pills */
+    transition: all 0.3s ease;
+    border-radius: 10px !important;
+}
+
+/* Hover and Inactive State */
+.service-tabs .nav-link:hover {
+    color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+/* Active Tab State */
+.service-tabs .nav-link.active {
+    color: var(--bs-white);
+    background-color: var(--bs-primary); /* Primary color background */
+    border-color: var(--bs-primary);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure active tab icons/text remains visible */
+.service-tabs .nav-link.active i {
+    color: var(--bs-white) !important;
+}
+
+/* Business Service Card (Specific styling for the larger cards) */
+.business-service-card {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.service-card-link:hover .business-service-card {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+    border-color: var(--bs-primary);
+}
+
+/* Overriding the text color on hover for better visibility */
+.service-card-link:hover h4,
+.service-card-link:hover h5 {
+    color: var(--bs-primary) !important;
+}

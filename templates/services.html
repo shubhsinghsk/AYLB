@@ -16,171 +16,99 @@
     <div class="container">
         <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
             <h6 class="text-primary text-uppercase mb-2 fw-bold">Integrated Logistics</h6>
-            <h2 class="display-5 fw-bold mb-4">Two Ways We Optimize Your Supply Chain</h2>
-            <p class="fs-5 text-muted mb-5">From cutting-edge digital tools to comprehensive physical fulfillment, Godamwale provides the full spectrum of logistics and supply chain services tailored for the Indian market.</p>
+            <h2 class="display-5 fw-bold mb-4">Discover Your Path to Supply Chain Optimization</h2>
+            <p class="fs-5 text-muted mb-5">Select a service category below to explore the digital and physical tools AYLB Logistics provides for a seamless supply chain.</p>
         </div>
     </div>
 </div>
 
-<div class="container-fluid bg-light py-5">
-    <div class="container py-5">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h3 class="fw-bold mb-4 text-primary">BUSINESS SERVICES (TECH & PLATFORM)</h3>
-            <p class="lead mb-5">Leverage our digital platforms and consulting expertise to gain full control and intelligence over your logistics processes.</p>
-        </div>
-        <div class="row g-4 justify-content-center">
-            
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                <a href="/service/wms-software" class="service-card-link">
-                    <div class="service-card p-4 rounded-4 shadow-sm h-100 text-center">
-                        <i class="fas fa-magic fa-4x text-primary mb-3"></i>
-                        <h4 class="fw-bold mb-2">WMS & E-commerce Software</h4>
-                        <p class="text-muted mb-0">Unified platform for inventory, orders, and sales channel integration.</p>
-                    </div>
-                </a>
+<div class="container-xxl pb-5">
+    <div class="container">
+        <div class="row wow fadeInUp" data-wow-delay="0.3s">
+            <div class="col-12">
+                <ul class="nav nav-pills nav-fill mb-5 service-tabs" id="serviceTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active fw-bold py-3" id="business-tab" data-bs-toggle="pill" data-bs-target="#business-services" type="button" role="tab" aria-controls="business-services" aria-selected="true">
+                            <i class="fas fa-magic me-2"></i> BUSINESS SERVICES (TECH)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold py-3" id="3pl-tab" data-bs-toggle="pill" data-bs-target="#3pl-services" type="button" role="tab" aria-controls="3pl-services" aria-selected="false">
+                            <i class="fas fa-warehouse me-2"></i> 3PL SERVICES (OPERATIONS)
+                        </button>
+                    </li>
+                </ul>
             </div>
-
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                <a href="/service/fulfillment-lastmile" class="service-card-link">
-                    <div class="service-card p-4 rounded-4 shadow-sm h-100 text-center">
-                        <i class="fas fa-truck-loading fa-4x text-primary mb-3"></i>
-                        <h4 class="fw-bold mb-2">Fulfillment & Last Mile</h4>
-                        <p class="text-muted mb-0">End-to-end execution from picking to customer doorstep delivery.</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                <a href="/service/technology-autonomous" class="service-card-link">
-                    <div class="service-card p-4 rounded-4 shadow-sm h-100 text-center">
-                        <i class="fas fa-robot fa-4x text-primary mb-3"></i>
-                        <h4 class="fw-bold mb-2">Technology Autonomous</h4>
-                        <p class="text-muted mb-0">Future-proof your operations with robotics, AI, and process automation.</p>
-                    </div>
-                </a>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-<div class="container-xxl py-5">
-    <div class="container py-5">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h3 class="fw-bold mb-4 text-dark-emphasis">3PL SERVICES (OPERATIONS & EXECUTION)</h3>
-            <p class="lead mb-5">Comprehensive third-party logistics solutions that provide flexibility, scale, and operational expertise.</p>
         </div>
 
-        <div class="row g-4">
+        <div class="tab-content" id="serviceTabContent">
             
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.2s">
-                <a href="/service/warehouse-services" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-warehouse fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">Warehouse Services</h5>
+            <div class="tab-pane fade show active" id="business-services" role="tabpanel" aria-labelledby="business-tab">
+                <div class="row g-4 justify-content-center">
+                    
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <a href="/service/wms-software" class="service-card-link">
+                            <div class="business-service-card p-4 rounded-4 shadow-sm h-100 text-center">
+                                <i class="fas fa-desktop fa-4x text-primary mb-3"></i>
+                                <h4 class="fw-bold mb-2">WMS & E-commerce Software</h4>
+                                <p class="text-muted mb-0">Unified platform for inventory, orders, and sales channel integration.</p>
+                            </div>
+                        </a>
                     </div>
-                </a>
+
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                        <a href="/service/fulfillment-lastmile" class="service-card-link">
+                            <div class="business-service-card p-4 rounded-4 shadow-sm h-100 text-center">
+                                <i class="fas fa-shipping-fast fa-4x text-primary mb-3"></i>
+                                <h4 class="fw-bold mb-2">Fulfillment & Last Mile</h4>
+                                <p class="text-muted mb-0">End-to-end execution from picking to customer doorstep delivery.</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
+                        <a href="/service/technology-autonomous" class="service-card-link">
+                            <div class="business-service-card p-4 rounded-4 shadow-sm h-100 text-center">
+                                <i class="fas fa-robot fa-4x text-primary mb-3"></i>
+                                <h4 class="fw-bold mb-2">Technology Autonomous</h4>
+                                <p class="text-muted mb-0">Future-proof your operations with robotics, AI, and process automation.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                <a href="/service/contract-logistics" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-file-contract fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">Contract Logistics</h5>
+            <div class="tab-pane fade" id="3pl-services" role="tabpanel" aria-labelledby="3pl-tab">
+                <div class="row g-4">
+                    
+                    {% set services_3pl = [
+                        ('Warehouse Services', 'warehouse'),
+                        ('Contract Logistics', 'file-contract'),
+                        ('Fulfillment Warehouse', 'box-open'),
+                        ('On-Demand Warehousing', 'calendar-alt'),
+                        ('Distribution & Transportation', 'route'),
+                        ('Order Management Service', 'clipboard-check'),
+                        ('E-commerce Warehouse Services', 'shopping-basket'),
+                        ('Value Added Service', 'cubes'),
+                        ('Third Party Logistics (3PL)', 'users-cog'),
+                        ('Reverse Logistics Services', 'undo-alt'),
+                        ('Warehouse Management System', 'tablet-alt'),
+                        ('Education & Training Solutions', 'graduation-cap')
+                    ] %}
+                    
+                    {% for service_name, icon_class in services_3pl %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="{{ 0.2 + loop.index * 0.05 }}s">
+                        <a href="/service/{{ service_name|lower|replace(' ', '-')|replace('&', 'and')|replace('(', '')|replace(')', '') }}" class="service-card-link">
+                            <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
+                                <i class="fas fa-{{ icon_class }} fa-2x text-primary mb-3"></i>
+                                <h5 class="fw-bold mb-0">{{ service_name }}</h5>
+                            </div>
+                        </a>
                     </div>
-                </a>
+                    {% endfor %}
+                    
+                </div>
             </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.4s">
-                <a href="/service/fulfillment-warehouse" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-box-open fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">Fulfillment Warehouse</h5>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-                <a href="/service/on-demand-warehousing" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-calendar-alt fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">On-Demand Warehousing</h5>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.6s">
-                <a href="/service/distribution-transportation" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-route fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">Distribution & Transportation</h5>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-                <a href="/service/order-management-service" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-clipboard-check fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">Order Management Service</h5>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.8s">
-                <a href="/service/ecommerce-warehouse" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-shopping-basket fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">E-commerce Warehouse Services</h5>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.9s">
-                <a href="/service/value-added-service" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-cubes fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">Value Added Service</h5>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="1.0s">
-                <a href="/service/third-party-logistics" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-users-cog fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">Third Party Logistics (3PL)</h5>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="1.1s">
-                <a href="/service/reverse-logistics" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-undo-alt fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">Reverse Logistics Services</h5>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="1.2s">
-                <a href="/service/warehouse-management-system" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-desktop fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">Warehouse Management System</h5>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="1.3s">
-                <a href="/service/education-training" class="service-card-link">
-                    <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
-                        <i class="fas fa-graduation-cap fa-2x text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-0">Education & Training Solutions</h5>
-                    </div>
-                </a>
-            </div>
-            
         </div>
     </div>
 </div>
