@@ -29,3 +29,46 @@ function animateNetworkBars() {
 
 window.addEventListener("scroll", animateNetworkBars);
 window.addEventListener("load", animateNetworkBars);
+
+// Service Detail Page - Counter Animation
+function initServiceCounters() {
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        let current = 0;
+        const step = Math.ceil(target / 100);
+        const interval = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                counter.innerText = target.toLocaleString();
+                clearInterval(interval);
+            } else {
+                counter.innerText = current.toLocaleString();
+            }
+        }, 12);
+    });
+}
+
+// Service Detail Page - Image Modal
+function initImageModal() {
+    const imageModal = document.getElementById('imageModal');
+    if (imageModal) {
+        imageModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const imgSrc = button.getAttribute('data-img-src');
+            const imgTitle = button.getAttribute('data-img-title');
+            
+            const modalImg = this.querySelector('.modal-body img');
+            const modalTitle = this.querySelector('.modal-title');
+            
+            modalImg.src = imgSrc;
+            modalTitle.textContent = imgTitle;
+        });
+    }
+}
+
+// Initialize all service detail page features
+document.addEventListener('DOMContentLoaded', function() {
+    initServiceCounters();
+    initImageModal();
+});

@@ -733,3 +733,40 @@ contact-form {
 .service-card-link:hover h5 {
     color: var(--bs-primary) !important;
 }
+/* Service Detail Page Styles */
+.service-detail-image {
+    max-height: 400px;
+    object-fit: cover;
+    width: 100%;
+    transition: transform .3s ease;
+    cursor: pointer;
+}
+
+.img-hover-zoom {
+    transition: transform .3s ease;
+    cursor: pointer;
+}
+
+.img-hover-zoom:hover {
+    transform: scale(1.05);
+}
+
+.carousel-control-prev, 
+.carousel-control-next {
+    cursor: pointer;
+}
+
+.carousel-item a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0);
+    transition: background .3s ease;
+}
+
+.carousel-item a:hover::after {
+    background: rgba(0,0,0,0.1);
+}
