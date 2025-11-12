@@ -77,14 +77,24 @@
             
             <div class="col-lg-3 col-md-6">
                 <h4 class="footer-title text-light mb-4">Our Services</h4>
-                <a class="btn btn-link footer-link" href="air_freight.html">Air Freight</a>
-                <a class="btn btn-link footer-link" href="train_freight.html">Train Freight</a>
-                <a class="btn btn-link footer-link" href="truck_freight.html">Truck Freight</a>
-                <a class="btn btn-link footer-link" href="ODC.html">ODC (Over Dimensional Cargo)</a>
-                <a class="btn btn-link footer-link" href="warehousing.html">Warehousing</a>
-                <a class="btn btn-link footer-link" href="value_added_services.html">Value Added Services</a>
+                
+                {% set all_services = [
+                    ('WMS & E-commerce Software', 'wms-software'),
+                    ('Fulfillment & Last Mile', 'fulfillment-lastmile'),
+                    ('Technology Autonomous', 'technology-autonomous'),
+                    ('Dedicated Warehouse Services', 'warehouse-services'),
+                    ('Contract Logistics', 'contract-logistics'),
+                    ('Distribution & Transportation', 'distribution-transportation'),
+                    ('Reverse Logistics Services', 'reverse-logistics-services'),
+                    ('Value Added Services', 'value-added-service')
+                ] %}
+                
+                {% for name, slug in all_services[:6] %}
+                    <a class="btn btn-link footer-link" href="{{ url_for('service_detail', slug=slug) }}">{{ name }}</a>
+                {% endfor %}
+                
+                <a class="btn btn-link footer-link text-primary" href="{{ url_for('services') }}">View All Services <i class="fa fa-arrow-right ms-1"></i></a>
             </div>
-            
             <div class="col-lg-3 col-md-6">
                 <h4 class="footer-title text-light mb-4">Quick Links</h4>
                 <a class="btn btn-link footer-link" href="{{ url_for('index') }}">Home</a>
