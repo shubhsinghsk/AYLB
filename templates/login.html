@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-5">
+                    {# Header #}
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold text-dark mb-2">Welcome Back</h2>
+                        <p class="text-muted">Sign in to your account</p>
+                    </div>
+
+                    {# Login Form #}
+                    <form method="POST" action="{{ url_for('login') }}" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        {# Email Field #}
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold text-dark">Email Address</label>
+                            {% if form.email.errors %}
+                                {{ form.email(class="form-control is-invalid", placeholder="Enter your email") }}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.email.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.email(class="form-control", placeholder="Enter your email") }}
+                            {% endif %}
+                        </div>
+
+                        {# Password Field #}
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold text-dark">Password</label>
+                            {% if form.password.errors %}
+                                {{ form.password(class="form-control is-invalid", placeholder="Enter your password") }}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.password.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.password(class="form-control", placeholder="Enter your password") }}
+                            {% endif %}
+                        </div>
+
+                        {# Remember Me Checkbox #}
+                        <div class="mb-4">
+                            <div class="form-check">
+                                {{ form.remember(class="form-check-input") }}
+                                <label class="form-check-label text-muted" for="remember">
+                                    Remember me on this device
+                                </label>
+                            </div>
+                        </div>
+
+                        {# Submit Button #}
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary btn-lg fw-semibold") }}
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    {# Signup Link #}
+                    <p class="text-center text-muted mb-0">
+                        Don't have an account? 
+                        <a href="{{ url_for('register') }}" class="text-primary fw-semibold text-decoration-none">Sign up here</a>
+                    </p>
+
+                    {# Forgot Password Link #}
+                    <p class="text-center mt-3">
+                        <a href="#" class="text-muted text-decoration-none small">Forgot your password?</a>
+                    </p>
+                </div>
+            </div>
+
+            {# Additional Info Section #}
+            <div class="mt-4 text-center text-muted small">
+                <p>By signing in, you agree to our <a href="#" class="text-primary text-decoration-none">Terms of Service</a> and <a href="#" class="text-primary text-decoration-none">Privacy Policy</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

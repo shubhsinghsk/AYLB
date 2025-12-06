@@ -46,7 +46,8 @@
           <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('services') }}">Our Blog</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('contact') }}">Contact</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('carrier') }}">Carrier</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('services') }}">Login</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('login') }}">Login</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('register') }}">Register</a></li>
         </ul>
       </div>
     </div>
@@ -54,6 +55,16 @@
 
   <!-- Main content -->
   <main class="pt-1 mt-1">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{category}}">
+          {{message}}
+
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
     {% block content %}{% endblock %}
   </main>
   <div class="container-fluid bg-dark text-light footer pt-5 wow fadeIn" data-wow-delay="0.1s"
