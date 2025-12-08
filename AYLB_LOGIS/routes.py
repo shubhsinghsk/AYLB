@@ -8,6 +8,7 @@ from AYLB_LOGIS.form import RegistrationForm, LoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from AYLB_LOGIS.models import User
 from AYLB_LOGIS import config
+from flask_login import login_user, current_user, logout_user, login_required
 
 SERVICES = config.SERVICES
 
@@ -171,6 +172,8 @@ def contact():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
         # Hash the password before storing
@@ -200,12 +203,67 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
+# --- login route (update redirect to dashboard) ---
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     form = LoginForm()
-    return render_template('login.html', title='Register', form=form)
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            flash('Logged in successfully.', 'success')
+            # next param handling (optional)
+            next_page = request.args.get('next')
+            return redirect(next_page or url_for('dashboard'))
+        else:
+            flash('Login unsuccessful. Please check your credentials.', 'danger')
+
+    return render_template('login.html', title='Login', form=form)
 
 
+# --- dashboard (protected) ---
+@app.route('/dashboard', methods=['GET'])
+@login_required
+def dashboard():
+    # Example dashboard data (replace with real queries later)
+    stats = {
+        'active_orders': 12,
+        'warehouses': 3,
+        'pending_quotes': 4,
+        'messages': 7,
+        # you can add badges like unread_messages etc.
+    }
+    return render_template('dashboard.html', stats=stats)
+
+
+# --- account/profile (protected) ---
+@app.route('/account', methods=['GET'])
+@login_required
+def account():
+    # current_user is provided by flask-login
+    return render_template('account.html', user=current_user)
+
+
+# --- our blog (public) ---
+@app.route('/ourblog', methods=['GET'])
+def ourblog():
+    # stubbed posts - replace with DB query later
+    posts = [
+        {'title': 'How to optimize last-mile delivery', 'slug':'last-mile'},
+        {'title': 'Warehouse automation trends 2025', 'slug':'automation-2025'},
+    ]
+    return render_template('ourblog.html', posts=posts)
+
+
+# --- logout (fix decorator order) ---
+@app.route('/logout', methods=['GET'])
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     with app.app_context():
