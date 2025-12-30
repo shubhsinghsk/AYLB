@@ -61,6 +61,10 @@ def about():
 def services():
     return render_template('services.html')
 
+@app.route('/attendance')
+def attendance():
+    return render_template('attendance.html')
+
 
 # --- Service detail mapping and route ---------------------------------
 # A single route powers all service pages referenced from templates/services.html
