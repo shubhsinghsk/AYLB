@@ -21,6 +21,66 @@ body {
     color: white;
 }
 
+founder-card:hover,
+.team-card:hover {
+    transform: translateY(-8px);
+    transition: 0.3s ease;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+.mentor-wrapper {
+    max-width: 700px;
+}
+
+.teamSwiper {
+    padding: 20px 0 50px;
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+}
+
+/* Team Card */
+.team-card {
+    background: #fff;
+    width: 100%;
+    max-width: 320px;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    transition: 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-8px);
+}
+
+/* Image Size FIX */
+.team-card img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.team-card h4 {
+    color: #0d6efd;
+    margin-bottom: 5px;
+}
+
+.team-card p {
+    color: #6c757d;
+    margin: 0;
+}
+
+/* Arrow Styling */
+.swiper-button-next,
+.swiper-button-prev {
+    color: #0d6efd;
+}
+
 .hero-section::before {
     content: '';
     position: absolute;
