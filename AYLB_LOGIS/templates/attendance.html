@@ -1,135 +1,134 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <title>📍 AYLB Logistics Attendance</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <style>
-    body { font-family: Arial; background: #f5f5f5; padding: 20px; }
-    .form { background: #fff; padding: 20px; border-radius: 12px; max-width: 420px; margin: auto; box-shadow: 0 0 10px #ccc; }
-    input, button, textarea, select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 6px; border: 1px solid #ccc; }
-    button { background: #10b981; color: white; font-weight: bold; cursor: pointer; }
-    .btn-container { display: flex; gap: 10px; }
-    .btn { flex: 1; }
-    .hidden { display: none; }
-  </style>
-</head>
-<body>
-  <div class="form">
-    <!-- <h2><img src="logo2.png" alt="LogisNow Logo" style="width:40px; height:40px; object-fit:contain; filter: brightness(0.8) invert(1);">Logisnow Attendance</h2> -->
-    <div style="display: flex; justify-content: center;">
-    <h3 style="display: flex; align-items: center; gap: 10px; margin: 0;">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" 
-             alt="LogisNow Logo" 
-             style="width:40px; height:40px; object-fit:contain; filter: brightness(1.2) contrast(1.1);">
-        AYLB Logstics Attendance
-    </h3>
-    </div>
+{% extends "base.html" %}
+{% block content %}
 
-    <form id="attendanceForm">
-      <input type="text" name="name" placeholder="👤 Name" id="name" required>
-      <input type="text" name="empid" placeholder="🆔 Employee ID" id="empid" required>
-      
-      <!-- Auto GPS Location -->
-      <input type="hidden" name="location" id="location" placeholder="🌍 Auto Location" readonly required>
+<style>
+  .attendance-card { max-width: 480px; margin: 40px auto; background:#fff; border-radius:12px; padding:22px; box-shadow:0 8px 20px rgba(0,0,0,0.08); }
+  .status { margin: 12px 0; padding:10px; border-radius:8px; display:none; }
+  .status.info { background:#fff7e6; color:#8a6d00; border:1px solid #ffe7b5; }
+  .status.success { background:#e6ffef; color:#0b6b36; border:1px solid #c8f3d1; }
+  .status.fail { background:#ffecec; color:#8a1e1e; border:1px solid #f0c2c2; }
+  .btn-container { display:flex; gap:10px; margin-top:14px; }
+  .btn { flex:1; padding:10px 12px; font-weight:600; cursor:pointer; border-radius:8px; border:0; }
+  .btn-success { background:#16a34a; color:#fff; }
+  .btn-danger { background:#dc2626; color:#fff; }
+</style>
 
-      <!-- Manual Location Dropdown -->
-      <select name="manual_location" id="manual_location" required>
-        <option value="" disabled selected>✍️ Select Location</option>
-        <option value="Noida-63">Noida-63</option>
-        <option value="Noida-18">Noida-18</option>
-        <option value="Ghaziabad">Ghaziabad</option>
-        <option value="Lucknow">Lucknow</option>
-        <option value="Begusarai">Begusarai</option>
-        <option value="Faridabad">Faridabad</option>
-        <option value="PRAYAGRAJ">PRAYAGRAJ</option>
-      </select>
-
-      <!-- Hidden Email field -->
-      <input type="hidden" name="email" id="email" placeholder="📧 Email (Auto if possible)" readonly required>
-
-      <input type="hidden" name="punch" id="punch">
-
-      <div class="btn-container">
-        <button type="button" class="btn" onclick="setPunch('Punch In')">Punch In</button>
-        <button type="button" class="btn" onclick="setPunch('Punch Out')">Punch Out</button>
-      </div>
-    </form>
+<div class="attendance-card">
+  <div style="display:flex; align-items:center; gap:12px;">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:44px;">
+    <h4 style="margin:0">AYLB Logistics Attendance</h4>
   </div>
 
-  <script>
-    let autoLocationFilled = false;
+  <div id="statusInfo" class="status info">Ready</div>
+  <div id="statusSuccess" class="status success">✅ Submitted and recorded.</div>
+  <div id="statusFail" class="status fail">❌ Submission failed — see console / network.</div>
 
-    // Get GPS Location
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const coords = pos.coords.latitude + ", " + pos.coords.longitude;
-        document.getElementById("location").value = coords;
-        autoLocationFilled = true;
-      },
-      err => {
-        alert("⚠️ Please allow location access to continue.");
-        autoLocationFilled = false;
-      }
-    );
+  <form
+    id="attendanceForm"
+    method="POST"
+    action="https://script.google.com/macros/s/AKfycbwVPo9Ig1aUEolskjbbx4_1p96FVLpKnVc4TYsrEco0Q07_sQjDTwfPyXxcBZYbtVX79A/exec"
+    target="hidden_iframe">
 
-    // Google Identity API to get email (optional fallback)
-    // window.onload = () => {
-    //   google.accounts.id.initialize({
-    //     client_id: "YOUR_GOOGLE_CLIENT_ID", // Replace with your real client ID
-    //     callback: response => {
-    //       const decoded = parseJwt(response.credential);
-    //       document.getElementById("email").value = decoded.email;
-    //     }
-    //   });
-    //   google.accounts.id.prompt(); // Show login prompt if not already signed in
-    // };
+    <input class="form-control mb-2" name="name" id="name" placeholder="👤 Name" required>
+    <input class="form-control mb-2" name="empid" id="empid" placeholder="🆔 Employee ID" required>
 
-    function parseJwt(token) {
-      const base64Url = token.split('.')[1];
-      const base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(base64);
-    }
+    <select class="form-select mb-2" name="manual_location" id="manual_location" required>
+      <option value="" disabled selected>📍 Select Location</option>
+      <option value="Ghaziabad,28.6346049,77.4559115">Ghaziabad</option>
+      <option value="Noida-63,28.6387121,77.4066306">Noida-63</option>
+      <option value="Noida-18,28.557312,77.2472832">Noida-18</option>
+      <option value="Lucknow,27.1494895,83.4797673">Lucknow</option>
+      <option value="Begusarai,25.5856719,85.7853639">Begusarai</option>
+      <option value="Faridabad,28.682739,77.4816688">Faridabad</option>
+      <option value="Gurgaon,28.4665,77.0333">Gurgaon</option>
+      <option value="Prayagraj,25.33687334628686,81.90948936692249">Prayagraj</option>
+    </select>
 
-    function setPunch(type) {
-      const name = document.getElementById('name').value.trim();
-      const empid = document.getElementById('empid').value.trim();
-      const autoLoc = document.getElementById('location').value.trim();
+    <input type="hidden" name="location" id="location">
+    <input type="hidden" name="punch" id="punch">
 
-      if (!name || !empid) {
-        alert("❗ Name and Employee ID are required.");
-        return;
-      }
+    <div class="btn-container">
+      <button type="button" class="btn btn-success" onclick="submitPunch('Punch In')">Punch In</button>
+      <button type="button" class="btn btn-danger" onclick="submitPunch('Punch Out')">Punch Out</button>
+    </div>
+  </form>
 
-      if (!autoLoc) {
-        alert("❗ Location is required. Please allow GPS access.");
-        return;
-      }
+  <!-- hidden iframe used to avoid navigation; onload = success -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+</div>
 
-      document.getElementById('punch').value = type;
-      submitForm();
-    }
+<script>
+// small helpers
+const statusInfo = document.getElementById('statusInfo');
+const statusSuccess = document.getElementById('statusSuccess');
+const statusFail = document.getElementById('statusFail');
 
-    function submitForm() {
-      const form = document.getElementById("attendanceForm");
-      const formData = new FormData(form);
+function showInfo(msg){ statusInfo.style.display='block'; statusInfo.textContent=msg; statusSuccess.style.display='none'; statusFail.style.display='none'; }
+function showSuccess(msg){ statusSuccess.style.display='block'; statusSuccess.textContent=msg; statusInfo.style.display='none'; statusFail.style.display='none'; }
+function showFail(msg){ statusFail.style.display='block'; statusFail.textContent=msg; statusInfo.style.display='none'; statusSuccess.style.display='none'; }
 
-      fetch("https://script.google.com/macros/s/AKfycby1lPWCmL9zw9qiFhE_0-VsxVnXLiZv2uUsIiyQ1bC1phi-k_N0Zw2TifhrVwCR8FvPjg/exec", {
-        method: "POST",
-        body: formData
-      })
-      .then(res => res.text())
-      .then(response => {
-        alert("✅ " + document.getElementById('punch').value + " Submitted!");
-        form.reset();
-      })
-      .catch(() => {
-        alert("❌ Submission Failed!");
-      });
-    }
-  </script>
-</body>
-</html>
+// fill GPS as soon as possible (may ask permission)
+navigator.geolocation.getCurrentPosition(
+  function(pos){
+    const coords = pos.coords.latitude + ',' + pos.coords.longitude;
+    document.getElementById('location').value = coords;
+    console.log('GPS ok:', coords);
+  },
+  function(err){
+    console.warn('GPS error', err);
+    // still allow submit; but user must know it's required
+    showInfo('GPS blocked or unavailable — allow location for accurate attendance.');
+  },
+  { timeout:10000 }
+);
+
+// global submit function
+function submitPunch(type){
+  const form = document.getElementById('attendanceForm');
+  console.log('Preparing submit', { name: form.name.value, empid: form.empid.value, manual_location: form.manual_location.value, location: form.location.value });
+
+  // validation
+  if(!form.name.value || !form.empid.value || !form.manual_location.value){
+    alert('Please fill Name, Employee ID and select location.');
+    return;
+  }
+  if(!form.location.value){
+    // sometimes GPS is async; warn and allow user to retry after allowing location
+    if(!confirm('Location not available yet. Continue without location?')) return;
+  }
+
+  // set punch and UI
+  document.getElementById('punch').value = type;
+  showInfo('Submitting...');
+
+  // start a timeout watchdog (if iframe onload does not fire)
+  window.__attendance_watchdog = setTimeout(function(){
+    console.warn('Submission timeout — no iframe onload detected.');
+    showFail('No response detected. Check network/console or try again.');
+  }, 10000); // 10s
+
+  // submit (classic form POST)
+  form.submit();
+}
+
+// detect iframe load — indicates server responded (success or not)
+document.getElementById('hidden_iframe').addEventListener('load', function(){
+  // clear watchdog
+  if(window.__attendance_watchdog) clearTimeout(window.__attendance_watchdog);
+
+  // show success (we can't read body due to cross-origin, but load means response arrived)
+  console.log('iframe loaded — response arrived from Apps Script (doPost executed).');
+  showSuccess('✅ Attendance submitted — check sheet for row (may take a sec).');
+
+  // small reset (do not reset before submit!)
+  setTimeout(()=> {
+    document.getElementById('attendanceForm').reset();
+    // keep status visible for a short while
+  }, 800);
+});
+
+// helpful debug tip: watch network / payload
+console.log('Attendance page loaded. Open DevTools -> Network and filter "/exec" to watch POST.');
+</script>
+
+{% endblock %}

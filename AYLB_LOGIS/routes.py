@@ -9,6 +9,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from AYLB_LOGIS.models import User
 from AYLB_LOGIS import config
 from flask_login import login_user, current_user, logout_user, login_required
+import requests
+from math import radians, sin, cos, sqrt, atan2
+from datetime import datetime
+
 
 SERVICES = config.SERVICES
 
@@ -61,9 +65,68 @@ def about():
 def services():
     return render_template('services.html')
 
-@app.route('/attendance')
+# GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzvuob2ZyQ2Gf1Q5StrhOxaM-pMSnB2Mtw3Y8629H8FjOpUWU3SOWdGaMSc3zYqQLiS7Q/exec"
+
+# def calculate_distance(lat1, lon1, lat2, lon2):
+#     R = 6371000
+#     dlat = radians(lat2 - lat1)
+#     dlon = radians(lon2 - lon1)
+
+#     a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
+#     c = 2 * atan2(sqrt(a), sqrt(1 - a))
+#     return R * c
+
+@app.route('/attendance', methods=['GET', 'POST'])
 def attendance():
-    return render_template('attendance.html')
+    # if request.method == 'POST':
+    #     data = request.form
+
+    #     name = data.get('name')
+    #     empid = data.get('empid')
+    #     punch = data.get('punch')
+    #     auto_lat, auto_lon = map(float, data.get('location').split(','))
+    #     manual_name, manual_lat, manual_lon = data.get('manual_location').split(',')
+
+    #     distance = round(
+    #         calculate_distance(
+    #             auto_lat, auto_lon,
+    #             float(manual_lat), float(manual_lon)
+    #         )
+    #     )
+
+    #     is_mismatch = distance > 200
+
+    #     payload = {
+    #         'name': name,
+    #         'empid': empid,
+    #         'email': data.get('email', 'attendance@aylb.com'),  # REQUIRED
+    #         'punch': punch,
+    #         'manual_location': manual_name,
+    #         'location': f"{auto_lat},{auto_lon}",
+    #         'distance': distance,          # REQUIRED
+    #         'status': 'FLAGGED' if is_mismatch else 'OK',
+    #         'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #     }
+
+        
+    #     try:
+    #         requests.post(
+    #         GOOGLE_SCRIPT_URL,
+    #         data=payload,   # ⚠️ IMPORTANT (NOT json=payload)
+    #         timeout=10
+    #         )
+
+    #         flash(f'{punch} recorded successfully!', 'success')
+    #     except Exception:
+    #         flash('Attendance submission failed.', 'danger')
+
+    #     if distance > 200:
+    #         flash('Location mismatch detected (outside 200m). Marked for review.', 'warning')
+
+    #     return redirect(url_for('attendance'))
+
+    return render_template('attendance.html', title="Attendance")
+
 
 
 # --- Service detail mapping and route ---------------------------------
