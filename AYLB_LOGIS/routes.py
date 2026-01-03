@@ -9,7 +9,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from AYLB_LOGIS.models import User
 from AYLB_LOGIS import config
 from flask_login import login_user, current_user, logout_user, login_required
-import requests
 from math import radians, sin, cos, sqrt, atan2
 from datetime import datetime
 
