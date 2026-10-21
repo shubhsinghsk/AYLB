@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Dashboard</h2>
+    <div>
+      <a href="{{ url_for('account') }}" class="btn btn-outline-secondary btn-sm">Account</a>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">Logout</a>
+    </div>
+  </div>
+
+  <!-- Quick stats cards -->
+  <div class="row">
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">Active Orders</h6>
+          <h3 class="mb-0">{{ stats.active_orders }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">Warehouses</h6>
+          <h3 class="mb-0">{{ stats.warehouses }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">Pending Quotes</h6>
+          <h3 class="mb-0">{{ stats.pending_quotes }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">Messages</h6>
+          <h3 class="mb-0">{{ stats.messages }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action tiles -->
+  <div class="row mt-3">
+    <div class="col-md-6 mb-3">
+      <a href="{{ url_for('services') }}" class="card h-100 text-decoration-none text-dark">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5>Services</h5>
+            <p class="mb-0">Open service catalog & manage requests</p>
+          </div>
+          <div class="fs-3">🧰</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-6 mb-3">
+      <a href="{{ url_for('ourblog') }}" class="card h-100 text-decoration-none text-dark">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5>Our Blog</h5>
+            <p class="mb-0">Read articles and product updates</p>
+          </div>
+          <div class="fs-3">📝</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom mobile tap bar -->
+<nav class="bottom-tapbar d-md-none" id="tapbar" aria-label="Primary">
+  <a href="{{ url_for('index') }}" class="tap-item" data-name="home" aria-label="Home">
+    <div class="tap-icon">🏠</div>
+    <div class="tap-label">Home</div>
+  </a>
+  <a href="{{ url_for('services') }}" class="tap-item" data-name="services" aria-label="Services">
+    <div class="tap-icon">🧰</div>
+    <div class="tap-label">Services</div>
+  </a>
+  <a href="{{ url_for('dashboard') }}" class="tap-item active" data-name="dashboard" aria-label="Dashboard">
+    <div class="tap-icon">📊</div>
+    <div class="tap-label">Dashboard</div>
+  </a>
+  <a href="{{ url_for('ourblog') }}" class="tap-item" data-name="blog" aria-label="Blog">
+    <div class="tap-icon">📝</div>
+    <div class="tap-label">OurBlog</div>
+  </a>
+  <a href="{{ url_for('account') }}" class="tap-item" data-name="account" aria-label="Account">
+    <div class="tap-icon">👤</div>
+    <div class="tap-label">Account</div>
+  </a>
+</nav>
+
+<style>
+.bottom-tapbar{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: #fff;
+  border-top: 1px solid #e6e6e6;
+  display: flex;
+  z-index: 1050;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.bottom-tapbar .tap-item{
+  text-align:center;
+  text-decoration:none;
+  color:#333;
+  width:20%;
+  font-size:12px;
+  padding:6px 4px;
+}
+.bottom-tapbar .tap-item .tap-icon{
+  font-size:20px;
+}
+.bottom-tapbar .tap-item.active{
+  color:#0d6efd;
+  font-weight:600;
+}
+@media(min-width:768px){
+  .bottom-tapbar{display:none;}
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.bottom-tapbar .tap-item').forEach(item=>{
+    item.addEventListener('click', function(){
+      document.querySelectorAll('.bottom-tapbar .tap-item').forEach(i=>i.classList.remove('active'));
+      this.classList.add('active');
+      // allow normal navigation
+    });
+  });
+});
+</script>
+{% endblock %}

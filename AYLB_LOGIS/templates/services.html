@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Our Solutions</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-white" href="index.html">Home</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Services</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="text-primary text-uppercase mb-2 fw-bold">Integrated Logistics</h6>
+            <h2 class="display-5 fw-bold mb-4">Discover Your Path to Supply Chain Optimization</h2>
+            <p class="fs-5 text-muted mb-5">Select a service category below to explore the digital and physical tools AYLB Logistics provides for a seamless supply chain.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container-xxl pb-5">
+    <div class="container">
+        <div class="row wow fadeInUp" data-wow-delay="0.3s">
+            <div class="col-12">
+                <ul class="nav nav-pills nav-fill mb-5 service-tabs" id="serviceTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active fw-bold py-3" id="business-tab" data-bs-toggle="pill" data-bs-target="#business-services" type="button" role="tab" aria-controls="business-services" aria-selected="true">
+                            <i class="fas fa-magic me-2"></i> BUSINESS SERVICES (TECH)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold py-3" id="3pl-tab" data-bs-toggle="pill" data-bs-target="#3pl-services" type="button" role="tab" aria-controls="3pl-services" aria-selected="false">
+                            <i class="fas fa-warehouse me-2"></i> 3PL SERVICES (OPERATIONS)
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="serviceTabContent">
+            
+            <div class="tab-pane fade show active" id="business-services" role="tabpanel" aria-labelledby="business-tab">
+                <div class="row g-4 justify-content-center">
+                    
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <a href="/service/wms-software" class="service-card-link">
+                            <div class="business-service-card p-4 rounded-4 shadow-sm h-100 text-center">
+                                <i class="fas fa-desktop fa-4x text-primary mb-3"></i>
+                                <h4 class="fw-bold mb-2">WMS & E-commerce Software</h4>
+                                <p class="text-muted mb-0">Unified platform for inventory, orders, and sales channel integration.</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                        <a href="/service/fulfillment-lastmile" class="service-card-link">
+                            <div class="business-service-card p-4 rounded-4 shadow-sm h-100 text-center">
+                                <i class="fas fa-shipping-fast fa-4x text-primary mb-3"></i>
+                                <h4 class="fw-bold mb-2">Fulfillment & Last Mile</h4>
+                                <p class="text-muted mb-0">End-to-end execution from picking to customer doorstep delivery.</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
+                        <a href="/service/technology-autonomous" class="service-card-link">
+                            <div class="business-service-card p-4 rounded-4 shadow-sm h-100 text-center">
+                                <i class="fas fa-robot fa-4x text-primary mb-3"></i>
+                                <h4 class="fw-bold mb-2">Technology Autonomous</h4>
+                                <p class="text-muted mb-0">Future-proof your operations with robotics, AI, and process automation.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="3pl-services" role="tabpanel" aria-labelledby="3pl-tab">
+                <div class="row g-4">
+                    
+                    {% set services_3pl = [
+                        ('Warehouse Services', 'warehouse'),
+                        ('Contract Logistics', 'file-contract'),
+                        ('Fulfillment Warehouse', 'box-open'),
+                        ('On-Demand Warehousing', 'calendar-alt'),
+                        ('Distribution & Transportation', 'route'),
+                        ('Order Management Service', 'clipboard-check'),
+                        ('E-commerce Warehouse Services', 'shopping-basket'),
+                        ('Value Added Service', 'cubes'),
+                        ('Third Party Logistics (3PL)', 'users-cog'),
+                        ('Reverse Logistics Services', 'undo-alt'),
+                        ('Warehouse Management System', 'tablet-alt'),
+                        ('Education & Training Solutions', 'graduation-cap')
+                    ] %}
+                    
+                    {% for service_name, icon_class in services_3pl %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="{{ 0.2 + loop.index * 0.05 }}s">
+                        <a href="/service/{{ service_name|lower|replace(' ', '-')|replace('&', 'and')|replace('(', '')|replace(')', '') }}" class="service-card-link">
+                            <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
+                                <i class="fas fa-{{ icon_class }} fa-2x text-primary mb-3"></i>
+                                <h5 class="fw-bold mb-0">{{ service_name }}</h5>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid bg-primary my-5 py-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-5 text-white mb-4 fw-bold">Ready to Scale?</h2>
+                <p class="fs-5 text-white-50 mb-5">Find the perfect blend of technology and operational excellence to drive down your logistics costs and maximize delivery efficiency across India.</p>
+                <a href="/contact" class="btn btn-secondary py-3 px-5 fw-bold">Get a Personalized Solution</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
