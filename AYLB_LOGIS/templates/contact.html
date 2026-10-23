@@ -43,7 +43,7 @@
                     </div>
                     <div class="ms-3">
                         <p class="mb-2 text-muted">Email Us</p>
-                        <h5 class="mb-0">info@aylblogistics.com</h5>
+                        <h5 class="mb-0"><a class="contact-detail-link" href="mailto:info@aylblogistics.com">info@aylblogistics.com</a></h5>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="ms-3">
                         <p class="mb-2 text-muted">Call Us</p>
-                        <h5 class="mb-0">+91 6202-949935</h5>
+                        <h5 class="mb-0"><a class="contact-detail-link" href="tel:+916202949935">+91 6202-949935</a></h5>
                     </div>
                 </div>
             </div>
@@ -69,20 +69,20 @@
                 <form method="POST" action="/contact" class="contact-form p-5 rounded-4 shadow-lg">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                            <input type="text" name="name" class="form-control" placeholder="Your Name" aria-label="Your name" autocomplete="name" required>
                         </div>
                         <div class="col-md-6">
-                            <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                            <input type="email" name="email" class="form-control" placeholder="Your Email" aria-label="Your email" autocomplete="email" required>
                         </div>
                         <div class="col-12">
                             <!-- NEW: Mobile Number Field Added -->
-                            <input type="tel" name="phone" class="form-control" placeholder="Mobile Number" required>
+                            <input type="tel" name="phone" class="form-control" placeholder="Mobile Number" aria-label="Mobile number" autocomplete="tel" required>
                         </div>
                         <div class="col-12">
-                            <input type="text" name="subject" class="form-control" placeholder="Subject">
+                            <input type="text" name="subject" class="form-control" placeholder="Subject" aria-label="Subject">
                         </div>
                         <div class="col-12">
-                            <textarea name="message" class="form-control" placeholder="Your Message" rows="6" required></textarea>
+                            <textarea name="message" class="form-control" placeholder="Your Message" aria-label="Your message" rows="6" required></textarea>
                         </div>
                         <div class="col-12">
                             <button class="btn btn-primary w-100 py-3 submit-btn" type="submit">Send Message</button>

@@ -6,7 +6,7 @@
         <h1 class="display-3 text-white mb-3 animated slideInDown">Our Solutions</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="{{ url_for('index') }}">Home</a></li>
                 <li class="breadcrumb-item text-white active" aria-current="page">Services</li>
             </ol>
         </nav>
@@ -17,7 +17,13 @@
         <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
             <h6 class="text-primary text-uppercase mb-2 fw-bold">Integrated Logistics</h6>
             <h2 class="display-5 fw-bold mb-4">Discover Your Path to Supply Chain Optimization</h2>
-            <p class="fs-5 text-muted mb-5">Select a service category below to explore the digital and physical tools AYLB Logistics provides for a seamless supply chain.</p>
+            <p class="fs-5 text-muted mb-4">Explore the digital and physical tools AYLB Logistics provides for a seamless supply chain.</p>
+            <div class="service-search-wrap mx-auto">
+                <label class="visually-hidden" for="serviceSearch">Search services in this category</label>
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <input id="serviceSearch" type="search" class="form-control service-search" placeholder="Search services in this category" autocomplete="off">
+                <span id="serviceSearchCount" class="service-search-count" aria-live="polite"></span>
+            </div>
         </div>
     </div>
 </div>
@@ -46,7 +52,7 @@
             <div class="tab-pane fade show active" id="business-services" role="tabpanel" aria-labelledby="business-tab">
                 <div class="row g-4 justify-content-center">
                     
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-service-card data-wow-delay="0.3s">
                         <a href="/service/wms-software" class="service-card-link">
                             <div class="business-service-card p-4 rounded-4 shadow-sm h-100 text-center">
                                 <i class="fas fa-desktop fa-4x text-primary mb-3"></i>
@@ -56,7 +62,7 @@
                         </a>
                     </div>
 
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-service-card data-wow-delay="0.5s">
                         <a href="/service/fulfillment-lastmile" class="service-card-link">
                             <div class="business-service-card p-4 rounded-4 shadow-sm h-100 text-center">
                                 <i class="fas fa-shipping-fast fa-4x text-primary mb-3"></i>
@@ -66,7 +72,7 @@
                         </a>
                     </div>
 
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-service-card data-wow-delay="0.7s">
                         <a href="/service/technology-autonomous" class="service-card-link">
                             <div class="business-service-card p-4 rounded-4 shadow-sm h-100 text-center">
                                 <i class="fas fa-robot fa-4x text-primary mb-3"></i>
@@ -97,7 +103,7 @@
                     ] %}
                     
                     {% for service_name, icon_class in services_3pl %}
-                    <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="{{ 0.2 + loop.index * 0.05 }}s">
+                    <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-service-card data-wow-delay="{{ 0.2 + loop.index * 0.05 }}s">
                         <a href="/service/{{ service_name|lower|replace(' ', '-')|replace('&', 'and')|replace('(', '')|replace(')', '') }}" class="service-card-link">
                             <div class="service-card-3pl p-4 rounded-4 shadow-sm h-100">
                                 <i class="fas fa-{{ icon_class }} fa-2x text-primary mb-3"></i>

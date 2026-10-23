@@ -1,4 +1,4 @@
-from AYLB_LOGIS import app
+import uvicorn
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    uvicorn.run("AYLB_LOGIS:app", host="0.0.0.0", port=8000, reload=True)

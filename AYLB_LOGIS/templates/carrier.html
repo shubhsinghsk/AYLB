@@ -6,7 +6,7 @@
         <h1 class="display-3 text-white mb-3 animated slideInDown">Join Our Team</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="{{ url_for('index') }}">Home</a></li>
                 <li class="breadcrumb-item text-white active" aria-current="page">Careers</li>
             </ol>
         </nav>
@@ -19,7 +19,7 @@
                 <h6 class="text-primary text-uppercase mb-3 fw-bold">Grow With AYLB Logistics</h6>
                 <h2 class="display-5 fw-bold mb-4">Be the Force Behind India's Logistics Revolution</h2>
                 <p class="mb-4 fs-5 text-secondary">
-                    We are building India's largest logistics marketplace, driven by **technology, innovation, and a commitment to optimizing supply chains**. Joining us means becoming a strategic partner in redefining how businesses connect, store, and move goods.
+                    We are building a technology-led logistics marketplace. Join a team focused on <strong>innovation and better supply chains</strong> — connecting businesses, storage, and transportation.
                 </p>
                 <div class="d-flex align-items-center mb-4 career-cta-box p-3 rounded-3 shadow-sm">
                     <i class="fas fa-handshake fa-3x text-primary flex-shrink-0 me-3"></i>
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                <img class="img-fluid rounded-4 shadow-lg about-image" src="https://placehold.co/600x400/4da6ff/ffffff?text=Careers+and+Growth" alt="Careers and Growth">
+                <img class="img-fluid rounded-4 shadow-lg about-image" src="{{ url_for('static', filename='images/about.png') }}" alt="AYLB Logistics team and operations">
             </div>
         </div>
     </div>
@@ -125,7 +125,7 @@
                 <h6 class="text-primary text-uppercase mb-3 fw-bold text-center">Submit Your Application</h6>
                 <h2 class="mb-4 fw-bold text-center">Ready to Make an Impact?</h2>
                 
-                <form action="#" method="POST" class="application-form p-5 rounded-4 shadow-lg" enctype="multipart/form-data">
+                <form action="#" method="POST" class="application-form p-5 rounded-4 shadow-lg" enctype="multipart/form-data" data-application-form>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <input type="text" name="applicant_name" class="form-control" placeholder="Full Name" required>
@@ -162,6 +162,7 @@
                         </div>
                     </div>
                 </form>
+                <p class="application-status mt-3 text-center" id="applicationStatus" role="status" hidden>Online applications are not connected yet, so your details have not been sent. Please <a href="{{ url_for('contact') }}">contact our team</a> about current opportunities.</p>
             </div>
         </div>
     </div>

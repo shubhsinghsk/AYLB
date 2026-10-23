@@ -1,337 +1,265 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, abort
-from datetime import datetime
-from AYLB_LOGIS import app, db,bcrypt
-import csv, os, smtplib, ssl
+"""Website routes implemented with FastAPI and Starlette sessions."""
+
+import csv
+import html
+import os
+import smtplib
+import ssl
+from datetime import datetime, timezone
 from email.message import EmailMessage
-from dotenv import load_dotenv
-from AYLB_LOGIS.form import RegistrationForm, LoginForm
-from werkzeug.security import generate_password_hash, check_password_hash
+from pathlib import Path
+
+from fastapi import Request
+from fastapi.responses import RedirectResponse
+from fastapi.templating import Jinja2Templates
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from AYLB_LOGIS import PACKAGE_DIR, PROJECT_DIR, SessionLocal, app
+from AYLB_LOGIS.config import SERVICES
+from AYLB_LOGIS.form import LoginForm, RegistrationForm
 from AYLB_LOGIS.models import User
-from AYLB_LOGIS import config
-from flask_login import login_user, current_user, logout_user, login_required
-from math import radians, sin, cos, sqrt, atan2
-from datetime import datetime
+
+templates = Jinja2Templates(directory=PACKAGE_DIR / "templates")
+CONTACTS_CSV = PROJECT_DIR / "contacts.csv"
+if not CONTACTS_CSV.exists():
+    with CONTACTS_CSV.open("w", newline="", encoding="utf-8") as file:
+        csv.writer(file).writerow(["timestamp", "name", "company", "email", "phone", "city", "service", "message"])
 
 
-SERVICES = config.SERVICES
+def flash(request: Request, message: str, category: str = "message"):
+    request.session.setdefault("_flashes", []).append((category, message))
 
-CONTACTS_CSV = 'contacts.csv'
-if not os.path.exists(CONTACTS_CSV):
-    with open(CONTACTS_CSV, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow(['timestamp','name','company','email','phone','city','service','message'])
+
+def get_flashed_messages(request: Request, with_categories=False):
+    messages = request.session.pop("_flashes", [])
+    return messages if with_categories else [message for _, message in messages]
+
+
+def render(request: Request, template: str, **context):
+    with SessionLocal() as db:
+        user_id = request.session.get("user_id")
+        current_user = db.get(User, user_id) if user_id else None
+    def template_url_for(name, **params):
+        # Flask templates use ``filename`` for static files; Starlette's mount
+        # route calls that parameter ``path``.
+        if name == "static" and "filename" in params:
+            params["path"] = params.pop("filename")
+        return request.url_for(name, **params)
+
+    return templates.TemplateResponse(
+        request=request,
+        name=template,
+        context={
+            "current_user": current_user,
+            "url_for": template_url_for,
+            "get_flashed_messages": lambda with_categories=False: get_flashed_messages(request, with_categories),
+            **context,
+        },
+    )
+
+
+def redirect(name: str, request: Request, status_code=303, **params):
+    return RedirectResponse(str(request.url_for(name, **params)), status_code=status_code)
+
 
 def send_email(subject, html_content, plain_text=None):
-    host = os.getenv('SMTP_HOST')
-    port = int(os.getenv('SMTP_PORT','587'))
-    user = os.getenv('SMTP_USERNAME')
-    password = os.getenv('SMTP_PASSWORD')
-    sender = os.getenv('EMAIL_FROM')
-    recipient = os.getenv('EMAIL_TO')
-
-    if not all([host, port, user, password, sender, recipient]):
-        return False, 'SMTP not configured properly.'
-
-    msg = EmailMessage()
-    msg['Subject'] = subject
-    msg['From'] = sender
-    msg['To'] = recipient
+    host = os.getenv("SMTP_HOST")
+    port = int(os.getenv("SMTP_PORT", "587"))
+    user, password = os.getenv("SMTP_USERNAME"), os.getenv("SMTP_PASSWORD")
+    sender, recipient = os.getenv("EMAIL_FROM"), os.getenv("EMAIL_TO")
+    if not all([host, user, password, sender, recipient]):
+        return False, "SMTP not configured properly."
+    message = EmailMessage()
+    message["Subject"], message["From"], message["To"] = subject, sender, recipient
     if plain_text:
-        msg.set_content(plain_text)
-        msg.add_alternative(html_content, subtype='html')
+        message.set_content(plain_text)
+        message.add_alternative(html_content, subtype="html")
     else:
-        msg.set_content(html_content, subtype='html')
-
-    context = ssl.create_default_context()
+        message.set_content(html_content, subtype="html")
     try:
         with smtplib.SMTP(host, port, timeout=10) as server:
-            server.starttls(context=context)
+            server.starttls(context=ssl.create_default_context())
             server.login(user, password)
-            server.send_message(msg)
-        return True, 'Email sent successfully.'
-    except Exception as e:
-        return False, str(e)
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/services')
-def services():
-    return render_template('services.html')
-
-# GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzvuob2ZyQ2Gf1Q5StrhOxaM-pMSnB2Mtw3Y8629H8FjOpUWU3SOWdGaMSc3zYqQLiS7Q/exec"
-
-# def calculate_distance(lat1, lon1, lat2, lon2):
-#     R = 6371000
-#     dlat = radians(lat2 - lat1)
-#     dlon = radians(lon2 - lon1)
-
-#     a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
-#     c = 2 * atan2(sqrt(a), sqrt(1 - a))
-#     return R * c
-
-@app.route('/attendance', methods=['GET', 'POST'])
-def attendance():
-    # if request.method == 'POST':
-    #     data = request.form
-
-    #     name = data.get('name')
-    #     empid = data.get('empid')
-    #     punch = data.get('punch')
-    #     auto_lat, auto_lon = map(float, data.get('location').split(','))
-    #     manual_name, manual_lat, manual_lon = data.get('manual_location').split(',')
-
-    #     distance = round(
-    #         calculate_distance(
-    #             auto_lat, auto_lon,
-    #             float(manual_lat), float(manual_lon)
-    #         )
-    #     )
-
-    #     is_mismatch = distance > 200
-
-    #     payload = {
-    #         'name': name,
-    #         'empid': empid,
-    #         'email': data.get('email', 'attendance@aylb.com'),  # REQUIRED
-    #         'punch': punch,
-    #         'manual_location': manual_name,
-    #         'location': f"{auto_lat},{auto_lon}",
-    #         'distance': distance,          # REQUIRED
-    #         'status': 'FLAGGED' if is_mismatch else 'OK',
-    #         'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    #     }
-
-        
-    #     try:
-    #         requests.post(
-    #         GOOGLE_SCRIPT_URL,
-    #         data=payload,   # ⚠️ IMPORTANT (NOT json=payload)
-    #         timeout=10
-    #         )
-
-    #         flash(f'{punch} recorded successfully!', 'success')
-    #     except Exception:
-    #         flash('Attendance submission failed.', 'danger')
-
-    #     if distance > 200:
-    #         flash('Location mismatch detected (outside 200m). Marked for review.', 'warning')
-
-    #     return redirect(url_for('attendance'))
-
-    return render_template('attendance.html', title="Attendance")
+            server.send_message(message)
+        return True, "Email sent successfully."
+    except (OSError, smtplib.SMTPException) as exc:
+        return False, str(exc)
 
 
+@app.get("/")
+async def index(request: Request):
+    return render(request, "index.html")
 
-# --- Service detail mapping and route ---------------------------------
-# A single route powers all service pages referenced from templates/services.html
+
+@app.get("/about")
+async def about(request: Request):
+    return render(request, "about.html")
 
 
-@app.route('/service/<slug>')
-def service_detail(slug):
+@app.get("/services")
+async def services(request: Request):
+    return render(request, "services.html")
+
+
+@app.api_route("/attendance", methods=["GET", "POST"])
+async def attendance(request: Request):
+    return render(request, "attendance.html", title="Attendance")
+
+
+@app.get("/service/{slug}")
+async def service_detail(slug: str, request: Request):
     service = SERVICES.get(slug)
-    if not service:
-        # If slug not found, return a 404
-        abort(404)
-    return render_template('service_detail.html', service=service)
+    if service is None:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Service not found")
+    return render(request, "service_detail.html", service=service)
 
 
-@app.route('/odc')
-def odc():
-    return render_template('ODC.html')
+@app.get("/odc")
+async def odc(request: Request):
+    return render(request, "ODC.html")
 
-@app.route('/value_added_services')
-def value_added_services():
-    return render_template('value_added_services.html')
 
-@app.route('/quote', methods=['POST'])
-def quote():
-    if request.method == 'POST':
-        name = request.form.get('name','').strip()
-        email = request.form.get('email','').strip()
-        message = request.form.get('message','').strip()
+@app.get("/value_added_services")
+async def value_added_services(request: Request):
+    return render(request, "value_added_services.html")
 
-        if not (name and email):
-            flash('Please provide Name and Email.', 'danger')
-            return redirect(url_for('index'))
 
-        # Send email logic here
-        flash('Thank you! Your quote request has been received.', 'success')
-        return redirect(url_for('index'))
+@app.post("/quote")
+async def quote(request: Request):
+    data = await request.form()
+    if not (str(data.get("name", "")).strip() and str(data.get("email", "")).strip()):
+        flash(request, "Please provide Name and Email.", "danger")
+    else:
+        flash(request, "Thank you! Your quote request has been received.", "success")
+    return redirect("index", request)
 
-@app.route('/carrier')
-def carrier():
-    return render_template('carrier.html')
 
-@app.route('/network')
-def network():
-    locations = [
-        {'city':'Delhi','type':'Hub'},
-        {'city':'Mumbai','type':'Hub'},
-        {'city':'Bengaluru','type':'Warehouse'},
-        {'city':'Chennai','type':'Warehouse'},
-    ]
-    return render_template('network.html', locations=locations)
+@app.get("/carrier")
+async def carrier(request: Request):
+    return render(request, "carrier.html")
 
-@app.route('/contact', methods=['GET','POST'])
-def contact():
-    if request.method == 'POST':
-        # Fields expected by the CSV/Email template:
-        name = request.form.get('name','').strip()
-        email = request.form.get('email','').strip()
-        phone = request.form.get('phone','').strip()
-        
-        # Fields not present in the current HTML form (set to default empty strings)
-        company = request.form.get('company','').strip()
-        city = request.form.get('city','').strip()
-        service = request.form.get('service','').strip()
-        
-        # Fields present in the current HTML form
-        subject = request.form.get('subject','').strip()
-        message = request.form.get('message','').strip()
 
-        if not (name and email and phone):
-            flash('Please provide Name, Email, and Phone.', 'danger')
-            return redirect(url_for('contact'))
+@app.get("/network")
+async def network(request: Request):
+    locations = [{"city": "Delhi", "type": "Hub"}, {"city": "Mumbai", "type": "Hub"}, {"city": "Bengaluru", "type": "Warehouse"}, {"city": "Chennai", "type": "Warehouse"}]
+    return render(request, "network.html", locations=locations)
 
-        timestamp = datetime.utcnow().isoformat()
-        
-        # 1. Log to CSV (uses all expected fields)
-        with open(CONTACTS_CSV, 'a', newline='', encoding='utf-8') as f:
-            writer = csv.writer(f)
-            # Row fields: ['timestamp','name','company','email','phone','city','service','message']
-            writer.writerow([timestamp,name,company,email,phone,city,service,message])
 
-        # 2. Prepare and send email (uses subject from the form)
-        
-        # Use subject from form if provided, otherwise create a default subject
-        email_subject = f'New enquiry from {name} - {subject or "General Contact"}'
-        
-        html = f"""
-        <h2>New Contact Enquiry Received</h2>
-        <p><b>Name:</b> {name}</p>
-        <p><b>Company:</b> {company if company else 'N/A'}</p>
-        <p><b>Email:</b> {email}</p>
-        <p><b>Phone:</b> {phone}</p>
-        <p><b>City:</b> {city if city else 'N/A'}</p>
-        <p><b>Service Requested:</b> {service if service else 'N/A'}</p>
-        <p><b>Subject:</b> {subject if subject else 'N/A'}</p>
-        <p><b>Message:</b><br>{message}</p>
-        <p><em>Received at UTC {timestamp}</em></p>
-        """
+@app.api_route("/contact", methods=["GET", "POST"])
+async def contact(request: Request):
+    if request.method == "GET":
+        return render(request, "contact.html")
+    data = await request.form()
+    values = {key: str(data.get(key, "")).strip() for key in ("name", "email", "phone", "company", "city", "service", "subject", "message")}
+    if not all(values[key] for key in ("name", "email", "phone")):
+        flash(request, "Please provide Name, Email, and Phone.", "danger")
+        return redirect("contact", request)
+    timestamp = datetime.now(timezone.utc).isoformat()
+    with CONTACTS_CSV.open("a", newline="", encoding="utf-8") as file:
+        csv.writer(file).writerow([timestamp, values["name"], values["company"], values["email"], values["phone"], values["city"], values["service"], values["message"]])
+    safe = {key: html.escape(value) for key, value in values.items()}
+    body = f"""<h2>New Contact Enquiry Received</h2><p><b>Name:</b> {safe['name']}</p><p><b>Company:</b> {safe['company'] or 'N/A'}</p><p><b>Email:</b> {safe['email']}</p><p><b>Phone:</b> {safe['phone']}</p><p><b>City:</b> {safe['city'] or 'N/A'}</p><p><b>Service Requested:</b> {safe['service'] or 'N/A'}</p><p><b>Subject:</b> {safe['subject'] or 'N/A'}</p><p><b>Message:</b><br>{safe['message']}</p><p><em>Received at UTC {timestamp}</em></p>"""
+    sent, info = send_email(f"New enquiry from {values['name']} - {values['subject'] or 'General Contact'}", body)
+    if sent:
+        flash(request, "Thank you! Your enquiry has been received.", "success")
+    else:
+        flash(request, "Message saved, but failed to send email. Check SMTP settings. Error: " + info, "warning")
+    return redirect("contact", request)
 
-        sent, info = send_email(email_subject, html)
-        if sent:
-            flash('Thank you! Your enquiry has been received.', 'success')
-        else:
-            # Displays the specific SMTP error for debugging
-            flash('Message saved, but failed to send email. Check SMTP settings. Error: ' + info, 'warning') 
 
-        return redirect(url_for('contact'))
-
-    return render_template('contact.html')
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        # Hash the password before storing
-        hashed_password = generate_password_hash(form.password.data)
-        
-        
-
-        # Create new user
-        user = User(
-            username=form.username.data,
-            email=form.email.data,
-            firstname = form.first_name.data,
-            lastname = form.last_name.data,
-            phone_no=int(form.mobile_no.data),
-            password=hashed_password
-        )
-        
+@app.api_route("/register", methods=["GET", "POST"])
+async def register(request: Request):
+    with SessionLocal() as db:
+        if request.session.get("user_id") and db.get(User, request.session["user_id"]):
+            return redirect("index", request)
+        if request.method == "GET":
+            return render(request, "register.html", title="Register", form=RegistrationForm())
+        data = await request.form()
+        values = {key: str(data.get(key, "")).strip() for key in RegistrationForm.fields}
+        errors = {}
+        def error(field, message): errors.setdefault(field, []).append(message)
+        if not 5 <= len(values["username"]) <= 20: error("username", "Username must be 5-20 characters.")
+        for field, label in (("first_name", "First name"), ("last_name", "Last name")):
+            if not 1 <= len(values[field]) <= 20: error(field, f"{label} is required (maximum 20 characters).")
+        if "@" not in values["email"] or "." not in values["email"].rsplit("@", 1)[-1]: error("email", "Enter a valid email address.")
+        if not values["mobile_no"].isdigit() or len(values["mobile_no"]) != 10: error("mobile_no", "Mobile number must contain exactly 10 digits.")
+        if not values["password"]: error("password", "Password is required.")
+        if values["confirm_password"] != values["password"]: error("confirm_password", "Passwords must match.")
+        if not errors:
+            if db.scalar(select(User).where(User.username == values["username"])): error("username", "That username is already registered.")
+            if db.scalar(select(User).where(User.email == values["email"])): error("email", "That email is already registered.")
+            if db.scalar(select(User).where(User.phone_no == values["mobile_no"])): error("mobile_no", "That phone number is already registered.")
+        if errors:
+            return render(request, "register.html", title="Register", form=RegistrationForm(values, errors))
+        user = User(username=values["username"], firstname=values["first_name"], lastname=values["last_name"], email=values["email"], phone_no=values["mobile_no"], password=generate_password_hash(values["password"]))
+        db.add(user)
         try:
-            db.session.add(user)
-            db.session.commit()
-            flash(f'Account created successfully for {form.username.data}! You can now login.', 'success')
-            return redirect(url_for('login'))
-        except Exception as e:
-            db.session.rollback()
-            flash(f'Error creating account: {str(e)}', 'danger')
-    
-    return render_template('register.html', title='Register', form=form)
+            db.commit()
+        except IntegrityError:
+            db.rollback()
+            flash(request, "An account with those details already exists.", "danger")
+            return redirect("register", request)
+        flash(request, f"Account created successfully for {user.username}! You can now login.", "success")
+        return redirect("login", request)
 
 
-# --- login route (update redirect to dashboard) ---
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user and check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
-            flash('Logged in successfully.', 'success')
-            # next param handling (optional)
-            next_page = request.args.get('next')
-            return redirect(next_page or url_for('dashboard'))
-        else:
-            flash('Login unsuccessful. Please check your credentials.', 'danger')
-
-    return render_template('login.html', title='Login', form=form)
-
-
-# --- dashboard (protected) ---
-@app.route('/dashboard', methods=['GET'])
-@login_required
-def dashboard():
-    # Example dashboard data (replace with real queries later)
-    stats = {
-        'active_orders': 12,
-        'warehouses': 3,
-        'pending_quotes': 4,
-        'messages': 7,
-        # you can add badges like unread_messages etc.
-    }
-    return render_template('dashboard.html', stats=stats)
+@app.api_route("/login", methods=["GET", "POST"])
+async def login(request: Request):
+    with SessionLocal() as db:
+        user = db.get(User, request.session.get("user_id")) if request.session.get("user_id") else None
+        if user:
+            return redirect("dashboard", request)
+        if request.method == "GET":
+            return render(request, "login.html", title="Login", form=LoginForm())
+        data = await request.form()
+        email, password = str(data.get("email", "")).strip(), str(data.get("password", ""))
+        user = db.scalar(select(User).where(User.email == email))
+        if user and check_password_hash(user.password, password):
+            request.session["user_id"] = user.id
+            flash(request, "Logged in successfully.", "success")
+            next_page = request.query_params.get("next")
+            if next_page and next_page.startswith("/") and not next_page.startswith("//"):
+                return RedirectResponse(next_page, status_code=303)
+            return redirect("dashboard", request)
+        flash(request, "Login unsuccessful. Please check your credentials.", "danger")
+        return render(request, "login.html", title="Login", form=LoginForm({"email": email}, {"email": ["Please check your email and password."]}))
 
 
-# --- account/profile (protected) ---
-@app.route('/account', methods=['GET'])
-@login_required
-def account():
-    # current_user is provided by flask-login
-    return render_template('account.html', user=current_user)
+def require_user(request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return None
+    with SessionLocal() as db:
+        return db.get(User, user_id)
 
 
-# --- our blog (public) ---
-@app.route('/ourblog', methods=['GET'])
-def ourblog():
-    # stubbed posts - replace with DB query later
-    posts = [
-        {'title': 'How to optimize last-mile delivery', 'slug':'last-mile'},
-        {'title': 'Warehouse automation trends 2025', 'slug':'automation-2025'},
-    ]
-    return render_template('ourblog.html', posts=posts)
+@app.get("/dashboard")
+async def dashboard(request: Request):
+    if not require_user(request):
+        return RedirectResponse(str(request.url_for("login")) + "?next=%2Fdashboard", status_code=303)
+    stats = {"active_orders": 12, "warehouses": 3, "pending_quotes": 4, "messages": 7}
+    return render(request, "dashboard.html", stats=stats)
 
 
-# --- logout (fix decorator order) ---
-@app.route('/logout', methods=['GET'])
-@login_required
-def logout():
-    logout_user()
-    flash('You have been logged out.', 'info')
-    return redirect(url_for('index'))
+@app.get("/account")
+async def account(request: Request):
+    user = require_user(request)
+    if not user:
+        return RedirectResponse(str(request.url_for("login")) + "?next=%2Faccount", status_code=303)
+    return render(request, "account.html", user=user)
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True, host='0.0.0.0')
+
+@app.get("/ourblog")
+async def ourblog(request: Request):
+    posts = [{"title": "How to optimize last-mile delivery", "slug": "last-mile"}, {"title": "Warehouse automation trends 2025", "slug": "automation-2025"}]
+    return render(request, "ourblog.html", posts=posts)
+
+
+@app.get("/logout")
+async def logout(request: Request):
+    request.session.pop("user_id", None)
+    flash(request, "You have been logged out.", "info")
+    return redirect("index", request)

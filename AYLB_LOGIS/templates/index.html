@@ -3,13 +3,17 @@
 <section class="hero-section text-center text-white d-flex align-items-center justify-content-center hero-image-background">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <h1 class="display-3 fw-bolder mb-3 animated slideInDown">Delivering the Future, Today</h1>
-                <p class="lead fs-4 mb-5 animated slideInUp">Fast, Reliable & Scalable Supply Chain Solutions Across India</p>
-                <a href="{{ url_for('services') }}" class="btn btn-secondary btn-lg py-3 px-5 fw-bold animated slideInUp">
-                    <span>Explore Our Integrated Services</span>
-                    <i class="fa fa-arrow-right ms-3"></i>
-                </a>
+            <div class="col-lg-10 hero-copy">
+                <p class="hero-eyebrow"><span></span> End-to-end logistics, built around your business</p>
+                <h1 class="display-3 fw-bolder mb-3">Move your business <em>forward.</em></h1>
+                <p class="lead fs-4 mb-5">Technology-enabled warehousing, fulfillment, and supply chain solutions across India.</p>
+                <div class="hero-actions">
+                    <a href="{{ url_for('services') }}" class="btn btn-primary btn-lg py-3 px-4 fw-bold">
+                        Explore our services <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
+                    </a>
+                    <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg py-3 px-4 fw-bold">Talk to our team</a>
+                </div>
+                <div class="hero-proof"><span><i class="fa fa-check-circle" aria-hidden="true"></i> Pan-India network</span><span><i class="fa fa-check-circle" aria-hidden="true"></i> Tech-enabled operations</span></div>
             </div>
         </div>
     </div>
@@ -21,16 +25,16 @@
                 <h6 class="text-primary text-uppercase mb-3 fw-bold">Some Facts</h6>
                 <h1 class="fw-bold mb-4 text-dark">Why Choose AYLB Logistics?</h1>
                 <ul class="list-unstyled fs-5 text-secondary lh-lg mb-5">
-                    <li><i class="fas fa-truck-moving me-2 text-primary"></i> **Pan-India connectivity** ensuring seamless logistics support.</li>
-                    <li><i class="fas fa-handshake me-2 text-primary"></i> **Skilled and hardworking staff** committed to excellence.</li>
-                    <li><i class="fas fa-lightbulb me-2 text-primary"></i> **Innovative and reliable** logistics solutions with a dynamic approach.</li>
+                    <li><i class="fas fa-truck-moving me-2 text-primary"></i> <strong>Pan-India connectivity</strong> for seamless logistics support.</li>
+                    <li><i class="fas fa-handshake me-2 text-primary"></i> <strong>Skilled teams</strong> committed to reliable operations.</li>
+                    <li><i class="fas fa-lightbulb me-2 text-primary"></i> <strong>Practical innovation</strong> for a more responsive supply chain.</li>
                 </ul>
 
                 <div class="d-flex align-items-center mt-5 shadow-sm p-4 rounded bg-white contact-card hover-up">
                     <i class="fa fa-headphones fa-3x text-primary flex-shrink-0 p-3 bg-light rounded-circle me-3"></i>
                     <div>
                         <h6 class="text-muted mb-1">Call for any query!</h6>
-                        <h3 class="text-primary fw-bolder m-0">+91 6202-949935</h3>
+                        <a href="tel:+916202949935" class="phone-link">+91 6202-949935</a>
                     </div>
                 </div>
             </div>
@@ -41,12 +45,12 @@
                     <div class="col-sm-6">
                         <div class="stat-card bg-primary text-white p-4 mb-4 rounded-4 shadow-lg hover-scale">
                             <i class="fa fa-building fa-2x mb-2"></i>
-                            <h2 class="mb-0 d-inline">23+</h2>
+                            <h2 class="mb-0 d-inline"><span data-count="23" data-suffix="+">23+</span></h2>
                             <p class="mb-0">Offices in India</p>
                         </div>
                         <div class="stat-card bg-info text-white p-4 rounded-4 shadow-lg hover-scale">
                             <i class="fa fa-users fa-2x mb-2"></i>
-                            <h2 class="mb-0 d-inline">230+</h2>
+                            <h2 class="mb-0 d-inline"><span data-count="230" data-suffix="+">230+</span></h2>
                             <p class="mb-0">Hardworking Staff</p>
                         </div>
                     </div>
@@ -54,12 +58,12 @@
                     <div class="col-sm-6">
                         <div class="stat-card bg-secondary text-white p-4 mb-4 rounded-4 shadow-lg hover-scale">
                             <i class="fa fa-flask fa-2x mb-2"></i>
-                            <h2 class="mb-0 d-inline">15+</h2>
+                            <h2 class="mb-0 d-inline"><span data-count="15" data-suffix="+">15+</span></h2>
                             <p class="mb-0">Years of Experience</p>
                         </div>
                         <div class="stat-card bg-primary text-white p-4 rounded-4 shadow-lg hover-scale">
                             <i class="fa fa-map fa-2x mb-2"></i>
-                            <h2 class="mb-0 d-inline">100+</h2>
+                            <h2 class="mb-0 d-inline"><span data-count="100" data-suffix="+">100+</span></h2>
                             <p class="mb-0">Serviceable Pincodes</p>
                         </div>
                     </div>
@@ -112,7 +116,7 @@
                     <i class="fas fa-rocket fa-3x text-primary mb-4"></i>
                     <h3 class="text-dark mb-3">Our Vision 🚀</h3>
                     <p class="text-secondary fs-5">
-                        To become a leading force in the logistics and supply chain industry by delivering **smart, sustainable, and technology-driven solutions** that move businesses forward — connecting people, products, and possibilities across every mile.
+                        To become a leading force in logistics by delivering <strong>smart, sustainable, technology-driven solutions</strong> that connect people, products, and possibilities across every mile.
                     </p>
                 </div>
             </div>
@@ -121,13 +125,13 @@
                     <i class="fas fa-bullseye fa-3x text-primary mb-4"></i>
                     <h3 class="text-dark mb-3">Our Mission 🎯</h3>
                     <p class="text-secondary fs-5 mb-4">
-                        At AYLB Logistics, our mission is to redefine logistics with **speed, precision, and reliability**. We are committed to:
+                        At AYLB Logistics, our mission is to deliver logistics with <strong>speed, precision, and reliability</strong>. We are committed to:
                     </p>
                     <ul class="mission-list list-unstyled">
-                        <li><i class="fas fa-check-circle me-2 text-primary"></i>Ensuring **on-time deliveries** through innovation and efficient operations.</li>
-                        <li><i class="fas fa-check-circle me-2 text-primary"></i>Building **long-term partnerships** with clients by offering transparent and value-driven services.</li>
-                        <li><i class="fas fa-check-circle me-2 text-primary"></i>Empowering our teams to deliver **excellence**, every day.</li>
-                        <li><i class="fas fa-check-circle me-2 text-primary"></i>Promoting **sustainability** and responsibility in every step of our supply chain journey.</li>
+                        <li><i class="fas fa-check-circle me-2 text-primary"></i>Ensuring <strong>on-time deliveries</strong> through efficient operations.</li>
+                        <li><i class="fas fa-check-circle me-2 text-primary"></i>Building <strong>long-term partnerships</strong> through transparent service.</li>
+                        <li><i class="fas fa-check-circle me-2 text-primary"></i>Empowering our teams to deliver excellence every day.</li>
+                        <li><i class="fas fa-check-circle me-2 text-primary"></i>Promoting sustainable and responsible supply chains.</li>
                     </ul>
                 </div>
             </div>
@@ -139,21 +143,23 @@
         <div class="row g-5 mx-lg-0">
             <div class="col-lg-6 feature-text wow fadeIn" data-wow-delay="0.1s">
                 <h6 class="text-primary text-uppercase mb-2 fw-bold">Our Network</h6>
-                <h2 class="mb-5 fw-bold">REGIONS DIVIDED INTO BRANCHES</h2>
+                <h2 class="mb-3 fw-bold">A network built for reach</h2>
+                <p class="text-muted mb-4">Select a region to explore the branch coverage represented in our network.</p>
 
-                <div id="network-container">
-                    <div class="network-item" data-count="2"><span>DELHI</span></div>
-                    <div class="network-item" data-count="5"><span>AP & TELANGANA</span></div>
-                    <div class="network-item" data-count="12"><span>BIHAR, JHARKHAND & ODISHA</span></div>
-                    <div class="network-item" data-count="11"><span>HARYANA, RAJASTHAN</span></div>
-                    <div class="network-item" data-count="7"><span>J&K, HP, LADAKH & PUNJAB</span></div>
-                    <div class="network-item" data-count="5"><span>KARNATAKA</span></div>
-                    <div class="network-item" data-count="8"><span>MP & CHHATTISGARH</span></div>
-                    <div class="network-item" data-count="4"><span>PUNE, NASIK & GOA</span></div>
-                    <div class="network-item" data-count="3"><span>MUMBAI, VAPI & DAMAN</span></div>
-                    <div class="network-item" data-count="3"><span>NORTH-EAST</span></div>
-                    <div class="network-item" data-count="5"><span>UTTARAKHAND</span></div>
+                <div id="network-container" class="network-regions" aria-label="Branch network by region">
+                    <button class="network-item" type="button" data-count="2" aria-pressed="false"><span>Delhi</span></button>
+                    <button class="network-item" type="button" data-count="5" aria-pressed="false"><span>AP & Telangana</span></button>
+                    <button class="network-item" type="button" data-count="12" aria-pressed="false"><span>Bihar, Jharkhand & Odisha</span></button>
+                    <button class="network-item" type="button" data-count="11" aria-pressed="false"><span>Haryana & Rajasthan</span></button>
+                    <button class="network-item" type="button" data-count="7" aria-pressed="false"><span>J&K, HP, Ladakh & Punjab</span></button>
+                    <button class="network-item" type="button" data-count="5" aria-pressed="false"><span>Karnataka</span></button>
+                    <button class="network-item" type="button" data-count="8" aria-pressed="false"><span>MP & Chhattisgarh</span></button>
+                    <button class="network-item" type="button" data-count="4" aria-pressed="false"><span>Pune, Nasik & Goa</span></button>
+                    <button class="network-item" type="button" data-count="3" aria-pressed="false"><span>Mumbai, Vapi & Daman</span></button>
+                    <button class="network-item" type="button" data-count="3" aria-pressed="false"><span>North-East</span></button>
+                    <button class="network-item" type="button" data-count="5" aria-pressed="false"><span>Uttarakhand</span></button>
                 </div>
+                <p class="network-selection" id="networkSelection" aria-live="polite">Choose a region to see its network count.</p>
             </div>
 
             <div class="col-lg-6 pe-lg-0 wow fadeIn" data-wow-delay="0.5s">
@@ -219,7 +225,7 @@
             <div class="card h-100 shadow-lg border-0 highlight-card hover-scale">
                 <div class="card-body">
                     <i class="fas fa-box-open fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title fw-bolder">30+ Lakh Packets Delivered</h5>
+                    <h5 class="card-title fw-bolder"><span data-count="30" data-suffix="+ Lakh">30+ Lakh</span> Packets Delivered</h5>
                     <p class="card-text text-muted">Efficiently managed large-scale logistics during festive rush.</p>
                 </div>
             </div>
@@ -244,47 +250,5 @@
         </div>
     </div>
 </section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const container = document.getElementById('network-container');
-    if (!container) return;
-
-    const items = container.querySelectorAll('.network-item');
-    let maxCount = 0;
-
-    // 1. Find the maximum branch count to set the scale
-    items.forEach(item => {
-        const count = parseInt(item.getAttribute('data-count'));
-        if (count > maxCount) {
-            maxCount = count;
-        }
-    });
-
-    // 2. Apply dynamic width and add count display
-    items.forEach(item => {
-        const count = parseInt(item.getAttribute('data-count'));
-        const percentage = (count / maxCount) * 100;
-        
-        // Create the bar element
-        const bar = document.createElement('div');
-        bar.className = 'network-bar';
-        
-        // Create the count element
-        const countSpan = document.createElement('span');
-        countSpan.className = 'network-count';
-        countSpan.textContent = count; // Start with the final count
-
-        // Append count to bar, bar to item
-        bar.appendChild(countSpan);
-        item.appendChild(bar);
-
-        // Animate width after a slight delay
-        setTimeout(() => {
-            bar.style.width = percentage + '%';
-        }, 100); 
-    });
-});
-</script>
 
 {% endblock %}
