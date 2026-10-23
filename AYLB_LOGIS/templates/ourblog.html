@@ -1,15 +1,107 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container py-4">
-  <h2>Our Blog</h2>
-  <div class="list-group">
-    {% for post in posts %}
-      <a href="{{ url_for('service_detail', slug=post.slug) }}" class="list-group-item list-group-item-action">
-        <h5 class="mb-1">{{ post.title }}</h5>
-      </a>
-    {% else %}
-      <p>No posts found.</p>
-    {% endfor %}
+<section class="blog-page">
+  <div class="blog-hero">
+    <div class="container blog-hero-inner">
+      <p class="blog-eyebrow">AYLB LOGISTICS · PEOPLE & MOMENTS</p>
+      <h1>People move<br><span>everything forward.</span></h1>
+      <p class="blog-intro">A look at the teams, milestones, and everyday moments behind our work.</p>
+      <a class="blog-scroll-link" href="#stories">Explore our stories <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
+      <div class="blog-hero-photo" aria-hidden="true">
+        <img src="{{ url_for('static', filename='images/blog/PHOTO-2026-10-24-00-56-20_13.jpg') }}" alt="">
+        <span>Good work happens together.</span>
+      </div>
+    </div>
   </div>
+
+  <section class="container blog-content" id="stories" aria-labelledby="stories-title">
+    <div class="blog-section-heading">
+      <div><p class="blog-eyebrow">FROM THE FLOOR, AND BEYOND</p><h2 id="stories-title">Stories from our people</h2></div>
+      <p>Real moments from the teams who make it happen.</p>
+    </div>
+
+    <div class="blog-controls">
+      <div class="blog-filters" role="group" aria-label="Filter stories">
+        <button class="blog-filter is-active" type="button" data-filter="all" aria-pressed="true">All moments</button>
+        <button class="blog-filter" type="button" data-filter="team" aria-pressed="false">Our teams</button>
+        <button class="blog-filter" type="button" data-filter="culture" aria-pressed="false">Life at AYLB</button>
+        <button class="blog-filter" type="button" data-filter="warehouse" aria-pressed="false">On the floor</button>
+      </div>
+      <label class="blog-search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span class="visually-hidden">Search stories</span><input id="blogSearch" type="search" placeholder="Search stories" autocomplete="off"></label>
+    </div>
+
+    <div class="blog-grid" id="blogGrid">
+      {% for post in posts %}
+      <article class="blog-card" data-category="{{ post.category }}" data-search="{{ (post.title ~ ' ' ~ post.description ~ ' ' ~ post.category_label)|lower }}">
+        <button class="blog-card-button" type="button" data-photo="{{ url_for('static', filename='images/blog/' ~ post.image) }}" data-title="{{ post.title }}" data-caption="{{ post.description }}" aria-label="View photo: {{ post.title }}">
+          <span class="blog-card-image"><img src="{{ url_for('static', filename='images/blog/' ~ post.image) }}" alt="{{ post.alt }}" loading="lazy"><span class="blog-card-open"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span></span>
+          <span class="blog-card-meta"><span>{{ post.category_label }}</span><span>Photo story</span></span>
+          <span class="blog-card-title">{{ post.title }}</span>
+          <span class="blog-card-description">{{ post.description }}</span>
+        </button>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="blog-empty" id="blogEmpty" hidden>No stories match that search. Try another word or topic.</p>
+  </section>
+
+  <section class="blog-closer">
+    <div class="container blog-closer-inner">
+      <div><p class="blog-eyebrow">THE PEOPLE BEHIND THE WORK</p><h2>Every delivery starts<br>with a dedicated team.</h2></div>
+      <a href="{{ url_for('about') }}" class="blog-cta">Meet AYLB <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </section>
+</section>
+
+<div class="blog-lightbox" id="blogLightbox" hidden role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+  <button class="blog-lightbox-close" type="button" aria-label="Close photo viewer"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  <figure><img id="lightboxImage" src="" alt=""><figcaption><h2 id="lightboxTitle"></h2><p id="lightboxCaption"></p></figcaption></figure>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(() => {
+  const cards = [...document.querySelectorAll('.blog-card')];
+  const filters = [...document.querySelectorAll('.blog-filter')];
+  const search = document.getElementById('blogSearch');
+  const empty = document.getElementById('blogEmpty');
+  let activeFilter = 'all';
+  const update = () => {
+    const query = search.value.trim().toLowerCase();
+    let visible = 0;
+    cards.forEach(card => {
+      const show = (activeFilter === 'all' || card.dataset.category.split(' ').includes(activeFilter)) && card.dataset.search.includes(query);
+      card.hidden = !show;
+      if (show) visible++;
+    });
+    empty.hidden = visible > 0;
+  };
+  filters.forEach(button => button.addEventListener('click', () => {
+    activeFilter = button.dataset.filter;
+    filters.forEach(filter => { const selected = filter === button; filter.classList.toggle('is-active', selected); filter.setAttribute('aria-pressed', selected); });
+    update();
+  }));
+  search.addEventListener('input', update);
+
+  const viewer = document.getElementById('blogLightbox');
+  const viewerImage = document.getElementById('lightboxImage');
+  const close = viewer.querySelector('.blog-lightbox-close');
+  let previousFocus;
+  document.querySelectorAll('.blog-card-button').forEach(button => button.addEventListener('click', () => {
+    previousFocus = button;
+    viewerImage.src = button.dataset.photo;
+    viewerImage.alt = button.querySelector('img').alt;
+    document.getElementById('lightboxTitle').textContent = button.dataset.title;
+    document.getElementById('lightboxCaption').textContent = button.dataset.caption;
+    viewer.hidden = false;
+    document.body.classList.add('blog-viewer-open');
+    close.focus();
+  }));
+  const closeViewer = () => { viewer.hidden = true; document.body.classList.remove('blog-viewer-open'); if (previousFocus) previousFocus.focus(); };
+  close.addEventListener('click', closeViewer);
+  viewer.addEventListener('click', event => { if (event.target === viewer) closeViewer(); });
+  document.addEventListener('keydown', event => { if (!viewer.hidden && event.key === 'Escape') closeViewer(); });
+})();
+</script>
 {% endblock %}

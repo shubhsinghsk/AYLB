@@ -254,7 +254,33 @@ async def account(request: Request):
 
 @app.get("/ourblog")
 async def ourblog(request: Request):
-    posts = [{"title": "How to optimize last-mile delivery", "slug": "last-mile"}, {"title": "Warehouse automation trends 2025", "slug": "automation-2025"}]
+    photo_stories = [
+        ("PHOTO-2026-10-24-00-56-19.jpg", "Warehouse team on shift", "AYLB team members in high-visibility workwear, ready for the work on the floor.", "warehouse", "On the floor", "AYLB team members wearing high-visibility vests inside a warehouse."),
+        ("PHOTO-2026-10-24-00-56-19_1.jpg", "A blessing for the equipment", "Colleagues take part in a traditional puja beside warehouse equipment.", "culture", "Life at AYLB", "Colleagues perform a puja beside a piece of warehouse equipment."),
+        ("PHOTO-2026-10-24-00-56-19_2.jpg", "A warehouse gathering", "Colleagues gather inside the warehouse for a shared occasion.", "culture", "Life at AYLB", "A large group of colleagues gathered inside a warehouse."),
+        ("PHOTO-2026-10-24-00-56-19_3.jpg", "Team moment on the warehouse floor", "A group photo with the team among the warehouse shelves.", "warehouse", "On the floor", "AYLB colleagues pose together beside warehouse shelving."),
+        ("PHOTO-2026-10-24-00-56-19_4.jpg", "Traditional puja at work", "Colleagues gather for a traditional puja in their workspace.", "culture", "Life at AYLB", "Colleagues take part in a traditional puja in a work area."),
+        ("PHOTO-2026-10-24-00-56-19_5.jpg", "A puja with the team", "A small group comes together for a traditional puja in the workplace.", "culture", "Life at AYLB", "Colleagues seated together during a traditional puja."),
+        ("PHOTO-2026-10-24-00-56-19_6.jpg", "Team gathering in the warehouse", "Colleagues gather around a speaker for a team address on the warehouse floor.", "warehouse", "On the floor", "Colleagues gathered around a speaker in a warehouse."),
+        ("PHOTO-2026-10-24-00-56-19_7.jpg", "A shared celebration", "Colleagues sit together during a traditional workplace gathering.", "culture", "Life at AYLB", "Colleagues seated together at a workplace gathering."),
+        ("PHOTO-2026-10-24-00-56-20.jpg", "Puja with the team", "A close view of colleagues taking part in a traditional puja.", "culture", "Life at AYLB", "Colleagues take part in a traditional puja."),
+        ("PHOTO-2026-10-24-00-56-20_1.jpg", "Gathered for a traditional ceremony", "Colleagues sit together around a small ceremonial fire.", "culture", "Life at AYLB", "Colleagues seated around a small ceremonial fire."),
+        ("PHOTO-2026-10-24-00-56-20_11.jpg", "Holi colors at work", "The team marks Holi with bright colors and a group photo.", "culture", "Life at AYLB", "Colleagues stand together amid colorful Holi decorations."),
+        ("PHOTO-2026-10-24-00-56-20_12.jpg", "Independence Day at AYLB", "The team celebrates Independence Day inside the warehouse, surrounded by the tricolor.", "culture", "Life at AYLB", "AYLB colleagues celebrate Independence Day beside a decorated display."),
+        ("PHOTO-2026-10-24-00-56-20_13.jpg", "Our warehouse team", "A team photo among the shelves and stock that support day-to-day operations.", "warehouse", "On the floor", "AYLB team members pose among warehouse shelves and stocked goods."),
+        ("PHOTO-2026-10-24-00-56-20_2.jpg", "The people behind our operations", "A team photo that celebrates the colleagues who keep work moving.", "team", "Our teams", "AYLB colleagues pose together in workwear."),
+        ("PHOTO-2026-10-24-00-56-20_3.jpg", "Preparing for a workplace puja", "Colleagues prepare a space for a traditional puja at work.", "culture", "Life at AYLB", "Colleagues prepare a ceremonial space inside a warehouse."),
+        ("PHOTO-2026-10-24-00-56-20_4.jpg", "A puja gathering on the floor", "Colleagues come together for a traditional ceremony in the warehouse.", "culture", "Life at AYLB", "Colleagues gathered around a traditional puja setup in a warehouse."),
+        ("PHOTO-2026-10-24-00-56-20_5.jpg", "Team celebration indoors", "Colleagues pose together with celebration badges in their workspace.", "culture", "Life at AYLB", "Colleagues pose together indoors wearing celebration badges."),
+        ("PHOTO-2026-10-24-00-56-20_6.jpg", "A team in a new warehouse space", "Colleagues stand together inside a warehouse space, ready for the work ahead.", "warehouse", "On the floor", "AYLB colleagues stand inside a warehouse space."),
+        ("PHOTO-2026-10-24-00-56-20_7.jpg", "Holi with the team", "Colleagues mark Holi together with color, rangoli, and a group photo.", "culture", "Life at AYLB", "Colleagues gather outside beside colorful Holi rangoli."),
+        ("PHOTO-2026-10-24-00-56-20_8.jpg", "Colleagues at the workplace", "A group photo with colleagues gathered inside their workspace.", "team", "Our teams", "AYLB colleagues stand together inside a workplace."),
+        ("PHOTO-2026-10-24-00-56-20_9.jpg", "A big team gathering", "A large group of colleagues comes together inside the warehouse.", "team", "Our teams", "A large group of AYLB colleagues gathered in a warehouse."),
+        ("PHOTO-2026-10-24-00-56-20_10.jpg", "A traditional puja in the warehouse", "Colleagues gather around a ceremonial fire for a traditional puja.", "culture", "Life at AYLB", "Colleagues gathered around a ceremonial fire in the warehouse."),
+    ]
+    posts = [dict(image=image, title=title, description=description, category=category,
+                  category_label=category_label, alt=alt)
+             for image, title, description, category, category_label, alt in photo_stories]
     return render(request, "ourblog.html", posts=posts)
 
 
