@@ -14,7 +14,7 @@ from email.message import EmailMessage
 from pathlib import Path
 
 from fastapi import Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -234,6 +234,12 @@ def append_sheet_row(value_range, values):
         insertDataOption="INSERT_ROWS",
         body={"values": [values]},
     ).execute()
+
+
+@app.api_route("/health", methods=["GET", "HEAD"])
+async def health():
+    """Provide a lightweight endpoint for uptime and health monitors."""
+    return Response(status_code=200)
 
 
 @app.get("/")

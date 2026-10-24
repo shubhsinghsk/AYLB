@@ -63,13 +63,41 @@ Render Free blocks outbound SMTP. The app therefore uses Gmail's HTTPS API when 
 6. Open **Google Auth Platform → Clients → Create Client**.
 7. Choose **Desktop app**, give it a name such as `AYLB Render Gmail sender`, and create it.
 8. Download the OAuth client JSON file. Keep it private and outside the project/repository.
-9. On the development computer, install the current project requirements with `python -m pip install -r requirements.txt`.
-10. From the project folder, run `python scripts/get_gmail_refresh_token.py /full/path/to/the-downloaded-client-file.json`.
-11. A browser opens. Sign in as the Gmail address that should send the website email, review the permission, and allow sending email.
-12. The terminal prints `GMAIL_API_CLIENT_ID`, `GMAIL_API_CLIENT_SECRET`, and `GMAIL_API_REFRESH_TOKEN`. Treat all three as secrets. Add them to Render directly; do not paste them into chat or commit them.
-13. Google marks new external OAuth apps as **Testing** by default. Authorizations for Gmail scopes in Testing expire after seven days. For ongoing production sending, change the app publishing status to **In production**. Google may show an unverified-app warning or require verification depending on the audience and scope; follow the Google console prompts. See Google's [Gmail API Python quickstart](https://developers.google.com/workspace/gmail/api/quickstart/python) and [OAuth publishing status details](https://support.google.com/cloud/answer/15549945).
-14. In Render, open the website service, go to **Environment**, and add the three variables from the script output. Also set `EMAIL_FROM` to the same Gmail account used in the browser authorization, such as `AYLB Logistics <sender@gmail.com>`, and `EMAIL_TO` to the inbox that receives enquiries/applications.
-15. Save and deploy the Render service. When Gmail API credentials are present, the app automatically uses the Gmail API. If absent, it attempts SMTP using the settings above.
+9. On the computer where the AYLB project is saved, open Terminal and change to the project folder. For example:
+
+   ```bash
+   cd /Users/your-name/Work/AYLB
+   ```
+
+   Replace `your-name` with the macOS account name. This is the folder containing `run.py` and `requirements.txt`.
+
+10. Activate the project's virtual environment. For the `.venv` folder used in this setup:
+
+    ```bash
+    source .venv/bin/activate
+    ```
+
+    If your virtual environment has another name, activate that one instead.
+
+11. Install the project's dependencies:
+
+    ```bash
+    python -m pip install -r requirements.txt
+    ```
+
+12. Run the helper with the downloaded OAuth JSON file as its argument:
+
+    ```bash
+    python scripts/get_gmail_refresh_token.py
+    ```
+
+    Do not run or open the JSON filename by itself. That tries to execute a data file and can show `permission denied`. After typing the command above and a space, drag the downloaded `client_secret_....json` file from Downloads into the Terminal window. Terminal inserts the full path. Press Return.
+
+13. A browser opens. Sign in as the Gmail address that should send the website email, review the permission, and allow sending email. If Google shows an unverified-app notice, use **Advanced** and continue to the app, provided you recognize the project and initiated this authorization.
+14. The terminal prints `GMAIL_API_CLIENT_ID`, `GMAIL_API_CLIENT_SECRET`, and `GMAIL_API_REFRESH_TOKEN`. Treat all three as secrets. Add them to Render directly; do not paste them into chat or commit them.
+15. Google marks new external OAuth apps as **Testing** by default. Authorizations for Gmail scopes in Testing expire after seven days. For ongoing production sending, change the app publishing status to **In production**. Google may show an unverified-app warning or require verification depending on the audience and scope; follow the Google console prompts. See Google's [Gmail API Python quickstart](https://developers.google.com/workspace/gmail/api/quickstart/python) and [OAuth publishing status details](https://support.google.com/cloud/answer/15549945).
+16. In Render, open the website service, go to **Environment**, and add the three variables from the script output. Also set `EMAIL_FROM` to the same Gmail account used in the browser authorization, such as `AYLB Logistics <sender@gmail.com>`, and `EMAIL_TO` to the inbox that receives enquiries/applications.
+17. Save the Render settings and deploy the updated code by following Part 5 below. When Gmail API credentials are present, the updated app automatically uses the Gmail API. If absent, it attempts SMTP using the optional settings above.
 
 ## Part 2: Create the Google spreadsheet
 
@@ -234,25 +262,55 @@ The app needs the packages listed in `requirements.txt`, including the Google Sh
 
 If the project uses `.venv-1` instead, activate `.venv-1` and install the requirements there. The Python environment used to start the app must have the requirements installed.
 
-## Part 5: Verify the setup
+## Part 5: Deploy the Gmail API integration to Render Free
 
-### 16. Verify Contact email
+Render Free blocks outbound SMTP ports `25`, `465`, and `587`. The website must use the Gmail API over HTTPS. Merely adding Gmail variables to Render does not change the old SMTP code; the updated application must also be deployed. See [Render's Free plan limits](https://render.com/docs/free).
 
-1. Start or restart the app after saving `.env`.
+### 16. Save Gmail OAuth settings in Render
+
+1. Sign in to Render and open the AYLB website Web Service.
+2. Open **Environment**.
+3. Add `GMAIL_API_CLIENT_ID` and paste the matching value printed by the local helper.
+4. Add `GMAIL_API_CLIENT_SECRET` and paste its matching value.
+5. Add `GMAIL_API_REFRESH_TOKEN` and paste its matching value.
+6. Set `EMAIL_FROM` to the same Gmail account you authorized in the browser. It can include a display name, for example `AYLB Logistics <sender@gmail.com>`.
+7. Keep `EMAIL_TO` set to the inbox that should receive Contact enquiries and Careers applications.
+8. Keep Google Sheets variables and its Secret File as already configured. They are separate from Gmail authorization.
+9. Save the Environment settings. Choose **Save only** if available; otherwise allow Render to deploy, then deploy the newest code in the following steps.
+10. Do not paste these values into chat, commit them, or put them in a public document. The OAuth client JSON file is also private and should remain outside the repository.
+
+All three `GMAIL_API_*` values are required by this app. Gmail API settings take priority over SMTP when `GMAIL_API_REFRESH_TOKEN` is present. Keep the old SMTP values until Gmail API sending has been confirmed.
+
+### 17. Push and deploy the updated application code
+
+1. The Gmail API implementation and local authorization helper must be included in the code version Render deploys. The helper is `scripts/get_gmail_refresh_token.py`.
+2. Push the updated code to the Git branch connected to the Render service. For this setup, the feature branch is `codex/careers-integrations`.
+3. In Render, open **Settings → Build & Deploy** and check the service's **Branch**.
+4. If it is `codex/careers-integrations`, open **Deploys** and wait for the latest commit to finish deploying. The deployment should include the Gmail API sender code and `google-auth-oauthlib` dependency.
+5. If Render watches `main`, merge the feature branch into `main` through a pull request. Wait for the resulting deployment, or use **Manual Deploy → Deploy latest commit** if auto-deploy is disabled.
+6. Confirm the deployment status is **Live** before testing either form.
+
+Do not deploy only the environment settings while leaving the old application code in place. The old SMTP implementation will still try port 587 and fail on Render Free.
+
+## Part 6: Verify the setup
+
+### 18. Verify Contact email
+
+1. For Render, first confirm the deployment is **Live**. For local development, start or restart the app after saving `.env`.
 2. Open the Contact page in a browser.
 3. Submit a clearly labeled test message.
 4. Confirm the page shows a success message.
 5. Check the `EMAIL_TO` inbox and Spam folder for the test email.
-6. The enquiry is saved to local `contacts.csv`; remove the test row if it should not remain in the contact log.
+6. Contact enquiries are appended to the app's local `contacts.csv`; remove a test row if appropriate. Render Free has an ephemeral filesystem, so local file changes do not persist through restarts or deploys.
 
-### 17. Verify job listings
+### 19. Verify job listings
 
 1. Confirm one or more real open positions are listed in `OpenPositions` with `TRUE` in column F.
 2. Open or refresh the Careers page.
 3. Confirm active roles appear and inactive roles do not.
 4. If there are no active rows, the page shows an empty-state message. If Sheets is unreachable, it shows a temporary unavailable message.
 
-### 18. Verify an application
+### 20. Verify an application
 
 1. Open the Careers page and click **Apply Now** for a listed role.
 2. Enter the applicant's name, email, and phone number.
