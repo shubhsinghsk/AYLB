@@ -13,7 +13,7 @@ python run.py
 
 The app is available at <http://localhost:8000>. For development, FastAPI's interactive API documentation is at <http://localhost:8000/docs>.
 
-The SQLite database is stored at `instance/site.db`. Contact form submissions are appended to `contacts.csv`. Copy `env.example` to `.env` and set the SMTP values to enable Contact and Careers email notifications. Use `SMTP_SECURITY=starttls` with port 587, or `SMTP_SECURITY=ssl` with port 465. `auto` selects SSL for 465 and STARTTLS for other ports. The sending account may also require an app password or provider-specific SMTP credentials.
+The SQLite database is stored at `instance/site.db`. Contact form submissions are appended to `contacts.csv`. For Render's Free plan, configure `GMAIL_API_CLIENT_ID`, `GMAIL_API_CLIENT_SECRET`, and `GMAIL_API_REFRESH_TOKEN` to send Contact and Careers notifications through Gmail's HTTPS API. The local helper `scripts/get_gmail_refresh_token.py` prints these values after Google OAuth authorization. If Gmail API settings are absent, the app can use the optional SMTP settings in `env.example` on hosts that permit SMTP. Never commit `.env`, OAuth credentials, refresh tokens, or service-account keys.
 
 ## Careers and Google Sheets
 

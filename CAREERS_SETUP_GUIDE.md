@@ -9,9 +9,9 @@ This guide records the complete setup for the AYLB Contact email and Careers app
 - A Careers application is added as a row in the `Applications` tab, then emailed to `EMAIL_TO` with the applicant's resume attached.
 - The spreadsheet stores the resume filename, not the resume file itself.
 - Contact enquiries are not added to Google Sheets.
-- Contact and Careers emails use the same SMTP account and recipient setting.
+- Contact and Careers emails use the same Gmail sending account and recipient setting. On Render Free, messages use Gmail's HTTPS API; SMTP is an optional fallback for local development or hosts that allow it.
 
-## Part 1: Prepare Gmail SMTP
+## Part 1: Prepare Gmail sending
 
 Use an email account that the company controls. In the working AYLB setup, the same company Gmail address sends messages and receives them. Use an address authorized by the company if setting this up again.
 
@@ -23,7 +23,7 @@ Use an email account that the company controls. In the working AYLB setup, the s
 4. Open **2-Step Verification**.
 5. Turn it on if it is not already on, following Google's prompts.
 
-### 2. Create a Gmail App Password
+### 2. Create a Gmail App Password for local SMTP (optional)
 
 1. While signed in to the sending account, open [Google App Passwords](https://myaccount.google.com/apppasswords).
 2. Sign in again if Google asks.
@@ -35,7 +35,7 @@ Use an email account that the company controls. In the working AYLB setup, the s
 
 Google only shows this option when the account is eligible. A Workspace administrator or a security policy may prevent App Passwords. If the option is unavailable, ask the Workspace administrator for the approved SMTP method.
 
-### 3. Gmail SMTP values
+### 3. Gmail SMTP values for local development (optional)
 
 Use these values for Gmail:
 
@@ -50,6 +50,26 @@ Use these values for Gmail:
 | `EMAIL_TO` | The inbox that should receive Contact enquiries and Careers applications |
 
 Port 465 can also be used with `SMTP_SECURITY=ssl`. Do not mix port 465 with `starttls`, or port 587 with `ssl`.
+
+### 4. Gmail API setup for Render Free
+
+Render Free blocks outbound SMTP. The app therefore uses Gmail's HTTPS API when `GMAIL_API_REFRESH_TOKEN` is configured. SMTP settings are only a fallback on hosts that permit SMTP.
+
+1. In Google Cloud Console, select the Cloud project used for this website or create a dedicated project.
+2. Open **APIs & Services → Library**, search for **Gmail API**, and click **Enable**.
+3. Open **Google Auth Platform → Branding** and configure the app name, support email, and contact email.
+4. Under **Audience**, choose **External** for a regular Gmail account. Add the sending Gmail account as a test user while setting up.
+5. Open **Google Auth Platform → Data Access** and add this exact scope: `https://www.googleapis.com/auth/gmail.send`.
+6. Open **Google Auth Platform → Clients → Create Client**.
+7. Choose **Desktop app**, give it a name such as `AYLB Render Gmail sender`, and create it.
+8. Download the OAuth client JSON file. Keep it private and outside the project/repository.
+9. On the development computer, install the current project requirements with `python -m pip install -r requirements.txt`.
+10. From the project folder, run `python scripts/get_gmail_refresh_token.py /full/path/to/the-downloaded-client-file.json`.
+11. A browser opens. Sign in as the Gmail address that should send the website email, review the permission, and allow sending email.
+12. The terminal prints `GMAIL_API_CLIENT_ID`, `GMAIL_API_CLIENT_SECRET`, and `GMAIL_API_REFRESH_TOKEN`. Treat all three as secrets. Add them to Render directly; do not paste them into chat or commit them.
+13. Google marks new external OAuth apps as **Testing** by default. Authorizations for Gmail scopes in Testing expire after seven days. For ongoing production sending, change the app publishing status to **In production**. Google may show an unverified-app warning or require verification depending on the audience and scope; follow the Google console prompts. See Google's [Gmail API Python quickstart](https://developers.google.com/workspace/gmail/api/quickstart/python) and [OAuth publishing status details](https://support.google.com/cloud/answer/15549945).
+14. In Render, open the website service, go to **Environment**, and add the three variables from the script output. Also set `EMAIL_FROM` to the same Gmail account used in the browser authorization, such as `AYLB Logistics <sender@gmail.com>`, and `EMAIL_TO` to the inbox that receives enquiries/applications.
+15. Save and deploy the Render service. When Gmail API credentials are present, the app automatically uses the Gmail API. If absent, it attempts SMTP using the settings above.
 
 ## Part 2: Create the Google spreadsheet
 
@@ -166,7 +186,7 @@ The project folder is the folder containing `run.py`, `requirements.txt`, and `e
 1. In the project folder, make a copy of `env.example` and name the copy `.env` if `.env` does not exist yet.
 2. If `.env` already exists, edit it instead of replacing it. Replacing it would remove the SMTP password already saved there.
 3. Open `.env` in a text editor.
-4. Fill in the SMTP settings from Part 1. Remove any spaces in the App Password.
+4. Fill in SMTP settings from Part 3 for local development. Remove spaces from the App Password. The app prefers Gmail API if `GMAIL_API_REFRESH_TOKEN` is set; otherwise it uses SMTP.
 5. Fill in the Google Sheets settings:
 
 ```text
@@ -250,19 +270,18 @@ The application row is written first. If email delivery then fails, the page war
 
 ### Contact or Careers email shows a delivery warning
 
-1. Confirm `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURITY`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `EMAIL_FROM`, and `EMAIL_TO` are filled in `.env`.
-2. For Gmail, use `smtp.gmail.com`, port `587`, and `starttls`; use an App Password, not the regular account password.
-3. Remove spaces from the App Password.
-4. Confirm `EMAIL_FROM` uses the authenticated Gmail address or a sender alias configured in that account.
-5. Restart the app after editing `.env`.
-6. Check the terminal where the app is running for the detailed SMTP error. The website shows a short message to visitors; technical errors are logged on the server.
-7. Check the inbox Spam folder and Gmail security alerts.
+1. On Render Free, confirm all three `GMAIL_API_*` settings are present and copied without extra quotes or spaces.
+2. Confirm the OAuth browser flow authorized the same Gmail account named in `EMAIL_FROM`.
+3. Confirm **Gmail API** is enabled and that the Gmail address is listed as an OAuth test user if the app is still in Testing.
+4. If authorization expired after seven days, move the OAuth app to In production and repeat the local authorization to get a fresh refresh token.
+5. Check the Render log for `Gmail API delivery failed` and check the destination inbox's Spam folder.
+6. On a host where SMTP is allowed, if using the fallback, check the SMTP settings and app password.
 
 ### `CERTIFICATE_VERIFY_FAILED` on macOS Python 3.14
 
 The python.org macOS Python installer provides an **Install Certificates.command** utility. Run it from `/Applications/Python 3.14/Install Certificates.command`; wait for `Successfully installed certifi` and `update complete`, then restart the app. Python's instructions are [here](https://docs.python.org/3.14/using/mac.html).
 
-The app also uses Certifi's CA bundle when the dependency is installed. Do not disable certificate verification to work around this error. If a company network intercepts TLS, ask IT for its approved CA certificate and set `SMTP_CA_BUNDLE` to that PEM file path.
+The app uses HTTPS for Gmail API delivery. Do not disable TLS verification to work around certificate errors.
 
 ### Careers page cannot load positions
 
@@ -291,18 +310,21 @@ The app also uses Certifi's CA bundle when the dependency is installed. Do not d
 
 ### User receives an application warning but the row exists
 
-The application was recorded in Google Sheets, but SMTP delivery failed afterward. Fix SMTP settings and use the applicant details in the sheet to follow up. Do not ask the applicant to submit again unless needed; that could create a duplicate row.
+The application was recorded in Google Sheets, but email delivery failed afterward. Fix the Gmail API settings and use the applicant details in the sheet to follow up. Do not ask the applicant to submit again unless needed; that could create a duplicate row.
 
 ## Environment variable reference
 
 | Variable | Purpose |
 | --- | --- |
-| `SMTP_HOST` | SMTP server, normally `smtp.gmail.com` |
+| `GMAIL_API_CLIENT_ID` | OAuth Desktop client ID for the Gmail sender |
+| `GMAIL_API_CLIENT_SECRET` | Secret from the OAuth Desktop client |
+| `GMAIL_API_REFRESH_TOKEN` | Offline authorization token from the local OAuth helper; secret |
+| `SMTP_HOST` | Optional SMTP server, normally `smtp.gmail.com` |
 | `SMTP_PORT` | SMTP port, normally `587` for STARTTLS |
 | `SMTP_SECURITY` | `starttls`, `ssl`, `auto`, or `none`; Gmail should use `starttls` with port 587 |
 | `SMTP_CA_BUNDLE` | Optional custom PEM certificate path for networks with a company CA |
 | `SMTP_USERNAME` | Full SMTP account email address |
-| `SMTP_PASSWORD` | App Password or provider SMTP password |
+| `SMTP_PASSWORD` | Optional App Password or provider SMTP password |
 | `EMAIL_FROM` | Sender address displayed on outgoing messages |
 | `EMAIL_TO` | Inbox for Contact and Careers notifications |
 | `GOOGLE_SHEETS_CREDENTIALS_FILE` | Local path to service account JSON key |

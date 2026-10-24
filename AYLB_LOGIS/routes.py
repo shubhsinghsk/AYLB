@@ -2,6 +2,7 @@
 
 import csv
 import asyncio
+import base64
 import html
 import json
 import logging
@@ -82,6 +83,12 @@ def smtp_ssl_context():
 
 
 def send_email(subject, html_content, plain_text=None, attachment=None, reply_to=None):
+    # Gmail's HTTPS API works on Render's Free plan, where outbound SMTP is blocked.
+    if os.getenv("GMAIL_API_REFRESH_TOKEN", "").strip():
+        return send_email_with_gmail_api(
+            subject, html_content, plain_text, attachment, reply_to
+        )
+
     host = os.getenv("SMTP_HOST")
     try:
         port = int(os.getenv("SMTP_PORT", "587"))
@@ -127,6 +134,50 @@ def send_email(subject, html_content, plain_text=None, attachment=None, reply_to
         return True, "Email sent successfully."
     except (OSError, smtplib.SMTPException, ValueError) as exc:
         logger.exception("SMTP delivery failed")
+        return False, str(exc)
+
+
+def send_email_with_gmail_api(subject, html_content, plain_text=None, attachment=None, reply_to=None):
+    """Send MIME email through Gmail's HTTPS API (works on Render Free)."""
+    sender, recipient = os.getenv("EMAIL_FROM", "").strip(), os.getenv("EMAIL_TO", "").strip()
+    client_id = os.getenv("GMAIL_API_CLIENT_ID", "").strip()
+    client_secret = os.getenv("GMAIL_API_CLIENT_SECRET", "").strip()
+    refresh_token = os.getenv("GMAIL_API_REFRESH_TOKEN", "").strip()
+    if not all([sender, recipient, client_id, client_secret, refresh_token]):
+        logger.error("Gmail API delivery is not configured: one or more required settings are missing")
+        return False, "Gmail API not configured properly."
+
+    message = EmailMessage()
+    message["Subject"], message["From"], message["To"] = subject, sender, recipient
+    if reply_to:
+        message["Reply-To"] = reply_to
+    if plain_text:
+        message.set_content(plain_text)
+        message.add_alternative(html_content, subtype="html")
+    else:
+        message.set_content(html_content, subtype="html")
+    if attachment:
+        filename, content, content_type = attachment
+        maintype, subtype = content_type.split("/", 1)
+        message.add_attachment(content, maintype=maintype, subtype=subtype, filename=filename)
+
+    try:
+        from google.oauth2.credentials import Credentials
+        from googleapiclient.discovery import build
+        credentials = Credentials(
+            token=None,
+            refresh_token=refresh_token,
+            token_uri="https://oauth2.googleapis.com/token",
+            client_id=client_id,
+            client_secret=client_secret,
+            scopes=["https://www.googleapis.com/auth/gmail.send"],
+        )
+        gmail = build("gmail", "v1", credentials=credentials, cache_discovery=False)
+        raw_message = base64.urlsafe_b64encode(message.as_bytes()).decode("ascii")
+        gmail.users().messages().send(userId="me", body={"raw": raw_message}).execute()
+        return True, "Email sent successfully."
+    except Exception as exc:
+        logger.exception("Gmail API delivery failed")
         return False, str(exc)
 
 
