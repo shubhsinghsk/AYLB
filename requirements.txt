@@ -7,3 +7,6 @@ itsdangerous>=2.2
 email_validator==2.1.0
 Werkzeug==3.0.1
 python-dotenv>=1.0,<2.0
+google-auth>=2.35,<3.0
+google-api-python-client>=2.150,<3.0
+certifi>=2024.8.30,<2027

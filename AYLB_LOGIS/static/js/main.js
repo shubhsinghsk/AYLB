@@ -177,12 +177,19 @@
 
   function initApplicationFormNotice() {
     const form = document.querySelector("[data-application-form]");
-    const status = document.getElementById("applicationStatus");
-    if (!form || !status) return;
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      status.hidden = false;
-      status.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "nearest" });
+    if (!form) return;
+    const roleSelect = form.querySelector("select[name='desired_role']");
+    document.querySelectorAll("[data-job-title]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (roleSelect) roleSelect.value = button.dataset.jobTitle;
+      });
+    });
+    form.addEventListener("submit", () => {
+      const button = form.querySelector("[type='submit']");
+      if (!button) return;
+      button.disabled = true;
+      button.setAttribute("aria-busy", "true");
+      button.innerHTML = '<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Submitting…';
     });
   }
 

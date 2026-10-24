@@ -659,15 +659,14 @@ contact-form {
 
 /* Job Opening Cards */
 .job-opening-card {
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    border: 1px solid var(--aylb-line);
 }
 
 .job-opening-card:hover {
-    /* Subtle change on hover to indicate clickability */
     border-color: var(--bs-primary);
-    background-color: #f7f9fc !important;
-    cursor: pointer;
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px rgba(11, 27, 51, 0.09);
 }
 
 /* Apply Button Styling */
