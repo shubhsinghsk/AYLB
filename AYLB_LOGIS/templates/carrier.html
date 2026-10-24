@@ -75,42 +75,33 @@
             <h2 class="display-6 fw-bold mb-5">Open Positions</h2>
         </div>
         
+        {% if positions_error %}
+        <div class="alert alert-warning text-center" role="status">{{ positions_error }}</div>
+        {% elif positions %}
         <div class="row g-4 justify-content-center">
-            
-            <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="job-opening-card p-4 rounded-4 shadow-lg bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+            {% for job in positions %}
+            <div class="col-lg-8 wow fadeInUp">
+                <article class="job-opening-card p-4 rounded-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                     <div>
-                        <h4 class="text-dark fw-bold mb-1">Senior Software Developer (WMS)</h4>
-                        <p class="text-muted mb-2"><i class="fas fa-map-marker-alt me-2 text-primary"></i>Noida, India | <i class="fas fa-briefcase me-2 text-primary"></i>Full-Time</p>
-                        <p class="mb-0 small text-secondary">Expert in modern web stacks to develop and maintain our Warehouse Management System.</p>
+                        <h3 class="h4 text-dark fw-bold mb-1">{{ job.title }}</h3>
+                        <p class="text-muted mb-2">
+                            {% if job.location %}<i class="fas fa-map-marker-alt me-2 text-primary"></i>{{ job.location }}{% endif %}
+                            {% if job.location and job.employment_type %} · {% endif %}
+                            {% if job.employment_type %}<i class="fas fa-briefcase me-2 text-primary"></i>{{ job.employment_type }}{% endif %}
+                        </p>
+                        {% if job.description %}<p class="mb-0 small text-secondary">{{ job.description }}</p>{% endif %}
                     </div>
-                    <a href="#application-form" class="btn btn-outline-primary mt-3 mt-md-0 apply-btn">Apply Now</a>
-                </div>
+                    <a href="#application-form" data-job-title="{{ job.title }}" class="btn btn-outline-primary apply-btn">Apply Now</a>
+                </article>
             </div>
-
-            <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
-                <div class="job-opening-card p-4 rounded-4 shadow-lg bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-                    <div>
-                        <h4 class="text-dark fw-bold mb-1">Logistics Operations Manager</h4>
-                        <p class="text-muted mb-2"><i class="fas fa-map-marker-alt me-2 text-primary"></i>Mumbai, India | <i class="fas fa-briefcase me-2 text-primary"></i>Full-Time</p>
-                        <p class="mb-0 small text-secondary">Oversee and optimize daily freight, storage, and 3PL operations across the Western network.</p>
-                    </div>
-                    <a href="#application-form" class="btn btn-outline-primary mt-3 mt-md-0 apply-btn">Apply Now</a>
-                </div>
-            </div>
-
-            <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.7s">
-                <div class="job-opening-card p-4 rounded-4 shadow-lg bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-                    <div>
-                        <h4 class="text-dark fw-bold mb-1">Supply Chain Consultant</h4>
-                        <p class="text-muted mb-2"><i class="fas fa-map-marker-alt me-2 text-primary"></i>Remote/Pan-India | <i class="fas fa-briefcase me-2 text-primary"></i>Full-Time</p>
-                        <p class="mb-0 small text-secondary">Provide advisory services to clients on cost reduction and supply chain architecture.</p>
-                    </div>
-                    <a href="#application-form" class="btn btn-outline-primary mt-3 mt-md-0 apply-btn">Apply Now</a>
-                </div>
-            </div>
-
+            {% endfor %}
         </div>
+        {% else %}
+        <div class="text-center py-4">
+            <h3 class="h4 fw-bold">No open positions right now</h3>
+            <p class="text-muted mb-0">You can still send a general application for future opportunities.</p>
+        </div>
+        {% endif %}
         
         <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.9s">
             <p class="text-muted fs-5">Can't find your role? Send us your resume for future opportunities!</p>
@@ -125,7 +116,7 @@
                 <h6 class="text-primary text-uppercase mb-3 fw-bold text-center">Submit Your Application</h6>
                 <h2 class="mb-4 fw-bold text-center">Ready to Make an Impact?</h2>
                 
-                <form action="#" method="POST" class="application-form p-5 rounded-4 shadow-lg" enctype="multipart/form-data" data-application-form>
+                <form action="{{ url_for('careers_apply') }}" method="POST" class="application-form p-4 p-md-5 rounded-4 shadow-lg" enctype="multipart/form-data" data-application-form>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <input type="text" name="applicant_name" class="form-control" placeholder="Full Name" required>
@@ -141,9 +132,7 @@
                             <h5 class="text-dark mb-2">Applying For:</h5>
                             <select name="desired_role" class="form-select form-control" required>
                                 <option value="">Select a Position *</option>
-                                <option value="Senior Software Developer">Senior Software Developer (WMS)</option>
-                                <option value="Logistics Operations Manager">Logistics Operations Manager</option>
-                                <option value="Supply Chain Consultant">Supply Chain Consultant</option>
+                                {% for job in positions %}<option value="{{ job.title }}">{{ job.title }}</option>{% endfor %}
                                 <option value="General Application">General Application (Future Opportunities)</option>
                             </select>
                         </div>
@@ -162,7 +151,7 @@
                         </div>
                     </div>
                 </form>
-                <p class="application-status mt-3 text-center" id="applicationStatus" role="status" hidden>Online applications are not connected yet, so your details have not been sent. Please <a href="{{ url_for('contact') }}">contact our team</a> about current opportunities.</p>
+                <p class="small text-muted mt-3 text-center">Your resume is sent to our recruiting team and its filename is recorded with your application.</p>
             </div>
         </div>
     </div>
